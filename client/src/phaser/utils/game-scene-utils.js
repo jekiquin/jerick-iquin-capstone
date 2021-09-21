@@ -1,11 +1,10 @@
 import Phaser from 'phaser';
 
-export function addPlayer(scene) {
-    scene.gameState.player = scene.physics.add.sprite(270,200,'ship').setScale(.5);
+export function addPlayer(scene, player) {
+    scene.gameState.player = scene.physics.add.sprite(270,200, player).setScale(.5);
     scene.gameState.player.setPosition(scene.cameras.main.centerX, 0);
     scene.gameState.player.setCollideWorldBounds(true);
 
-    // player bullets
     scene.gameState.playerBullet = scene.physics.add.group();
 }
 
@@ -14,29 +13,16 @@ export function addPlatform(scene) {
     scene.gameState.platforms.create(270, 719, 'platform').refreshBody();
 }
 
-export function addEnemies(scene) {
+export function addEnemies(scene, enemies) {
     scene.gameState.enemies = scene.physics.add.group();
     for (let yEnemies=1; yEnemies<6; yEnemies++) {
         const yOff = yEnemies === 1 ? 150 : 50;
         for (let xEnemies=1; xEnemies<11; xEnemies++) {
-            scene.gameState.enemies.create(50*xEnemies, yOff*yEnemies, `bug${yEnemies}`).setScale(.3).setGravityY(-200);
+            scene.gameState.enemies.create(50*xEnemies, yOff*yEnemies, enemies[yEnemies-1]).setScale(.3).setGravityY(-200);
         }
     }
 
-    const pellets = scene.physics.add.group();
-
-    scene.gameState.pelletsLoop = scene.time.addEvent({
-        delay: 500,
-        callback: () => genPellet(scene.gameState, pellets),
-        callbackScope: scene,
-        loop: true
-    });
-    // enemy bullets
-}
-
-function genPellet(gameState, pellets) {
-    const randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
-    pellets.create(randomBug.x, randomBug.y, 'enemybullet').setScale(.3);
+    scene.gameState.pellets = scene.physics.add.group();
 }
 
 export function addColliders(scene) {
@@ -47,3 +33,22 @@ export function addColliders(scene) {
         bullet.destroy();
     })
 }
+
+export function genPlayerBullets(scene, playerBullet) {
+    scene.gameState.playerBullet.create(scene.gameState.player.x, scene.gameState.player.y, playerBullet).setScale(.5).setGravityY(-400);
+}
+
+export function genEnemyBullets(scene, enemyBullet) {
+    scene.gameState.pelletsLoop = scene.time.addEvent({
+        delay: 500,
+        callback: () => genPellet(scene.gameState, scene.gameState.pellets, enemyBullet),
+        callbackScope: scene,
+        loop: true
+    });
+}
+
+function genPellet(gameState, pellets, enemyBullet) {
+    const randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
+    pellets.create(randomBug.x, randomBug.y, enemyBullet).setScale(.3);
+}
+

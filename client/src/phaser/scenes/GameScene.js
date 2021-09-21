@@ -1,5 +1,6 @@
 import { Scene, Input } from 'phaser';
-import {addPlayer, addPlatform, addEnemies, addColliders} from '../utils/game-scene-utils';
+import { addPlayer, addPlatform, addEnemies, addColliders, genEnemyBullets } from '../utils/game-scene-utils';
+import { gameControls } from '../utils/game-controls'
 
 // width: 540,
 // height: 720
@@ -7,7 +8,9 @@ import {addPlayer, addPlatform, addEnemies, addColliders} from '../utils/game-sc
 class GameScene extends Scene {
     constructor() {
         super({key: 'GameScene'});
-        this.gameState = {}
+        this.gameState = {
+            score: 0,
+        }
     }
 
 
@@ -28,26 +31,15 @@ class GameScene extends Scene {
         const {gameState} = this;
         gameState.cursors = this.input.keyboard.createCursorKeys();
 
-        addPlayer(this);
-        addPlatform(this);
-        addEnemies(this);
+        addPlayer(this, 'ship', 'playerbullet');
+        addPlatform(this, 'platform');
+        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
+        genEnemyBullets(this, 'enemybullet')
         addColliders(this);
     }
 
     update() {
-        // player controls
-        if (this.gameState.cursors.left.isDown) {
-            this.gameState.player.setVelocityX(-160);
-        } else if (this.gameState.cursors.right.isDown) {
-            this.gameState.player.setVelocityX(160);
-        } else {
-            this.gameState.player.setVelocityX(0);
-        }
-        
-        // player shot
-        if (Input.Keyboard.JustDown(this.gameState.cursors.space)) {
-            this.gameState.playerBullet.create(this.gameState.player.x, this.gameState.player.y, 'playerbullet').setScale(.5).setGravityY(-400);
-        }
+        gameControls(this, 'playerbullet')
     }
 
 }

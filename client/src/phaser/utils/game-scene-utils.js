@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 export function addPlayer(scene) {
     scene.gameState.player = scene.physics.add.sprite(270,200,'ship').setScale(.5);
     scene.gameState.player.setPosition(scene.cameras.main.centerX, 0);
@@ -21,7 +23,20 @@ export function addEnemies(scene) {
         }
     }
 
+    const pellets = scene.physics.add.group();
+
+    scene.gameState.pelletsLoop = scene.time.addEvent({
+        delay: 500,
+        callback: () => genPellet(scene.gameState, pellets),
+        callbackScope: scene,
+        loop: true
+    });
     // enemy bullets
+}
+
+function genPellet(gameState, pellets) {
+    const randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
+    pellets.create(randomBug.x, randomBug.y, 'enemybullet').setScale(.3);
 }
 
 export function addColliders(scene) {

@@ -20,6 +20,7 @@ class GameScene extends Scene {
         this.load.image('bug3', 'assets/sprites/bug3.png');
         this.load.image('bug4', 'assets/sprites/bug4.png');
         this.load.image('bug5', 'assets/sprites/bug5.png');
+        this.load.image('enemybullet', 'assets/sprites/enemybullet.png');
         this.load.image('platform', 'assets/images/platform.png');
     }
 

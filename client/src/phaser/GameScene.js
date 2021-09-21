@@ -24,37 +24,59 @@ class GameScene extends Scene {
 
     create() {
         const {gameState} = this;
-        gameState.player = this.physics.add.sprite(270,200,'ship').setScale(.5);
-        gameState.player.setPosition(this.cameras.main.centerX, this.cameras.main.centerY);
-        gameState.playerBullet = this.physics.add.group();
-        
         gameState.cursors = this.input.keyboard.createCursorKeys();
 
-        // creating platform
-        const platforms = this.physics.add.staticGroup();
-        platforms.create(270, 719, 'platform').refreshBody();
+        this.addPlayer();
+        this.addPlatform();
 
-        // platform boundary
-        gameState.player.setCollideWorldBounds(true);
-	    this.physics.add.collider(gameState.player, platforms);
+        this.addEnemies();
+
+        this.physics.add.collider(gameState.playerBullet, gameState.enemies, (bullet, enemy) => {
+            enemy.destroy();
+            bullet.destroy();
+        })
     }
 
     update() {
-        const {gameState} = this;
-
         // player controls
-        if (gameState.cursors.left.isDown) {
-            gameState.player.setVelocityX(-160);
-        } else if (gameState.cursors.right.isDown) {
-            gameState.player.setVelocityX(160);
+        if (this.gameState.cursors.left.isDown) {
+            this.gameState.player.setVelocityX(-160);
+        } else if (this.gameState.cursors.right.isDown) {
+            this.gameState.player.setVelocityX(160);
         } else {
-            gameState.player.setVelocityX(0);
+            this.gameState.player.setVelocityX(0);
         }
         
         // player shot
-        if (Input.Keyboard.JustDown(gameState.cursors.space)) {
-            gameState.playerBullet.create(gameState.player.x, gameState.player.y, 'playerbullet').setScale(.5).setGravityY(-400);
+        if (Input.Keyboard.JustDown(this.gameState.cursors.space)) {
+            this.gameState.playerBullet.create(this.gameState.player.x, this.gameState.player.y, 'playerbullet').setScale(.5).setGravityY(-400);
         }
+    }
+
+    addPlayer() {
+        this.gameState.player = this.physics.add.sprite(270,200,'ship').setScale(.5);
+        this.gameState.player.setPosition(this.cameras.main.centerX, 0);
+        this.gameState.player.setCollideWorldBounds(true);
+
+        this.gameState.playerBullet = this.physics.add.group();
+    }
+
+    addPlatform() {
+        this.gameState.platforms = this.physics.add.staticGroup();
+        this.gameState.platforms.create(270, 719, 'platform').refreshBody();
+    }
+
+    addEnemies() {
+        this.gameState.enemies = this.physics.add.group();
+        for (let yEnemies=1; yEnemies<6; yEnemies++) {
+            for (let xEnemies=1; xEnemies<11; xEnemies++) {
+                this.gameState.enemies.create(50*xEnemies, 50*yEnemies, `bug${yEnemies}`).setScale(.3).setGravityY(-200);
+            }
+        }
+    }
+
+    addColliders() {
+        this.physics.add.collider(this.gameState.player, this.gameState.platforms);
     }
 }
 

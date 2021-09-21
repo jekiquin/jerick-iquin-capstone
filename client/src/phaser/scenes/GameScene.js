@@ -1,4 +1,5 @@
 import { Scene, Input } from 'phaser';
+import {addPlayer, addPlatform, addEnemies, addColliders} from '../utils/game-scene-utils';
 
 // width: 540,
 // height: 720
@@ -26,15 +27,10 @@ class GameScene extends Scene {
         const {gameState} = this;
         gameState.cursors = this.input.keyboard.createCursorKeys();
 
-        this.addPlayer();
-        this.addPlatform();
-
-        this.addEnemies();
-
-        this.physics.add.collider(gameState.playerBullet, gameState.enemies, (bullet, enemy) => {
-            enemy.destroy();
-            bullet.destroy();
-        })
+        addPlayer(this);
+        addPlatform(this);
+        addEnemies(this);
+        addColliders(this);
     }
 
     update() {
@@ -53,31 +49,6 @@ class GameScene extends Scene {
         }
     }
 
-    addPlayer() {
-        this.gameState.player = this.physics.add.sprite(270,200,'ship').setScale(.5);
-        this.gameState.player.setPosition(this.cameras.main.centerX, 0);
-        this.gameState.player.setCollideWorldBounds(true);
-
-        this.gameState.playerBullet = this.physics.add.group();
-    }
-
-    addPlatform() {
-        this.gameState.platforms = this.physics.add.staticGroup();
-        this.gameState.platforms.create(270, 719, 'platform').refreshBody();
-    }
-
-    addEnemies() {
-        this.gameState.enemies = this.physics.add.group();
-        for (let yEnemies=1; yEnemies<6; yEnemies++) {
-            for (let xEnemies=1; xEnemies<11; xEnemies++) {
-                this.gameState.enemies.create(50*xEnemies, 50*yEnemies, `bug${yEnemies}`).setScale(.3).setGravityY(-200);
-            }
-        }
-    }
-
-    addColliders() {
-        this.physics.add.collider(this.gameState.player, this.gameState.platforms);
-    }
 }
 
 export default GameScene;

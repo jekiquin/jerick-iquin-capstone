@@ -78,7 +78,6 @@ class GameScene extends Scene {
         }
 
         if(!this.gameState.bossMove.isPlaying() && gameTime - this.gameState.bossStart > BOSS_DELAY) {
-            console.log('run');
             this.gameState.bossMove.play();
         }
         

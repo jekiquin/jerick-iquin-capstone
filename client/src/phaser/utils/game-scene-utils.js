@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-const SPEEDUP = 4;
-
+const SPEEDUP = 5;
+const SPEEDDROP = 60;
 
 export function addPlayer(scene, player) {
     scene.gameState.player = scene.physics.add.sprite(270,200, player).setScale(.17);
@@ -40,10 +40,7 @@ export function addBoss(scene, boss) {
         duration: 6000,
         repeat: 5,
         yoyo: false,
-        repeatDelay: 10000,
-        onRepeat: function() {
-            console.log(this);
-        }
+        repeatDelay: 10000
     })
     scene.gameState.bossMove.stop();
 }
@@ -101,25 +98,31 @@ export function genEnemyBullets(scene, enemyBullet) {
 export function genEnemyMovement(scene) {
     const totalEnemies = scene.gameState.enemies?.getChildren().length;
     if(!totalEnemies) {
+        scene.gameState.playerBullet.getChildren().forEach(bullet => bullet.destroy());
+        scene.gameState.pellets.getChildren().forEach(pellet => pellet.destroy());
         gamePlayEnd(scene);
         return
     }
 
+    let drop = 15;
     if (totalEnemies === 1 && Math.abs(scene.gameState.enemyVelocity) !== SPEEDUP) {
         scene.gameState.enemyVelocity *= SPEEDUP;
+        drop = SPEEDDROP;
     }
 
     const sortedEnemies = scene.gameState.enemies.getChildren().sort((a, b) => a.x - b.x);
     scene.gameState.leftMostBug = sortedEnemies[0];
     scene.gameState.rightMostBug = sortedEnemies[sortedEnemies.length - 1];
 
-    if(scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530) {
+    const isBoundary = scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530;
+
+    if(isBoundary) {
         scene.gameState.enemyVelocity *= -1;
     }
 
     scene.gameState.enemies.getChildren().forEach(enemy => {
-        if(scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530) {
-            enemy.y += 10; 
+        if(isBoundary) {
+            enemy.y += drop; 
         }
         enemy.x += scene.gameState.enemyVelocity;
     });

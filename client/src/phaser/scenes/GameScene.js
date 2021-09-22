@@ -5,7 +5,7 @@ import { gameControls } from '../utils/game-controls'
 // width: 540,
 // height: 720
 const ENEMY_FIRE_DELAY = 3500;
-const BOSS_DELAY = 10000;
+const BOSS_DELAY = 7000;
 
 class GameScene extends Scene {
     constructor() {
@@ -69,7 +69,7 @@ class GameScene extends Scene {
             this.gameState.bossStart = gameTime;
         }
 
-        if(this.gameState.pelletsLoop.paused) {
+        if(this.gameState.pelletsLoop?.paused) {
             this.gameState.pelletsLoop.paused = false;
         }
 
@@ -77,10 +77,9 @@ class GameScene extends Scene {
             this.gameState.enemies.setVisible(true);
         }
 
-        if (gameTime - this.gameState.startTime > BOSS_DELAY && !this.gameState.bossMove.hasStarted) {
-            this.gameState.boss.setVisible(true);
+        if(!this.gameState.bossMove.isPlaying() && gameTime - this.gameState.bossStart > BOSS_DELAY) {
+            console.log('run');
             this.gameState.bossMove.play();
-            
         }
         
         gameControls(this, 'playerbullet');

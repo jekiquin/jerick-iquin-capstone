@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-const SPEEDUP = 3.5;
+const SPEEDUP = 4;
+
 
 export function addPlayer(scene, player) {
     scene.gameState.player = scene.physics.add.sprite(270,200, player).setScale(.17);
@@ -30,21 +31,21 @@ export function addEnemies(scene, enemies) {
 
 export function addBoss(scene, boss) {
     scene.gameState.boss?.destroy();
-    scene.gameState.boss = scene.physics.add.sprite(0, 30, boss).setGravityY(-200).setScale(0.5).setVisible(false);
-
+    scene.gameState.boss = scene.physics.add.sprite(0, 30, boss).setGravityY(-200).setScale(0.5);
+    scene.gameState.boss.setOrigin(1,0);
     scene.gameState.bossMove = scene.tweens.add({
-        targets: scene.gameState.boss,
+        targets: [scene.gameState.boss],
         x: 600,
         ease: 'Linear',
         duration: 6000,
-        loop: -1,
+        repeat: 5,
         yoyo: false,
-        loopDelay: 10000,
-        onComplete: function() {scene.gameState.boss.destroy();}
+        repeatDelay: 10000,
+        onRepeat: function() {
+            console.log(this);
+        }
     })
-    
-
-    scene.gameState.bossMove.pause();
+    scene.gameState.bossMove.stop();
 }
 
 export function addColliders(scene) {
@@ -58,10 +59,16 @@ export function addColliders(scene) {
     });
 
 
-    scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (bullet, enemy) => {
+    scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (enemy, bullet) => {
         enemy.destroy();
         bullet.destroy();
         // console.log(enemy.texture.key);
+    });
+
+    scene.physics.add.overlap(scene.gameState.playerBullet, scene.gameState.bossMove.targets[0], (_, bullet) => {
+        bullet.destroy();
+        scene.gameState.bossMove.stop(0);
+        scene.gameState.bossStart = 0;
     });
 
     scene.physics.add.overlap(scene.gameState.pellets, scene.gameState.player, () => {

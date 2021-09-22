@@ -2,8 +2,6 @@ import { Scene } from 'phaser';
 import { addPlayer, addPlatform, addEnemies, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls'
 
-const ENEMY_DISPLAY_DELAY = 3500;
-const ENEMY_ATTACK_DELAY = 4000;
 // width: 540,
 // height: 720
 
@@ -13,13 +11,15 @@ class GameScene extends Scene {
         this.gameState = {
             startTime: 0,
             enemyVelocity: 1,
+            enemyVelocityFactor: 1,
+            enemyFireDelay: 3500,
             score: 0
         }
     }
 
 
     preload() {
-        this.load.image('ship', 'assets/sprites/ship.png');
+        this.load.image('ship', 'assets/sprites/ship.ico');
         this.load.image('playerbullet', 'assets/sprites/playerbullet.png');
         this.load.image('boss', 'assets/sprites/boss.png');
         this.load.image('bug1', 'assets/sprites/bug1.png');
@@ -35,9 +35,18 @@ class GameScene extends Scene {
         this.gameState.active = true;
         this.gameState.cursors = this.input.keyboard.createCursorKeys();
 
+        this.input.on('pointerup', () => {
+            if (!this.gameState.active) {
+                this.scene.restart();
+            }
+        })
+
         addPlayer(this, 'ship', 'playerbullet');
+        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
         addPlatform(this, 'platform');
+        addColliders(this);
         this.physics.add.collider(this.gameState.player, this.gameState.platforms);
+        genEnemyBullets(this, 'enemybullet');
     }
 
     update(gameTime) {
@@ -45,22 +54,24 @@ class GameScene extends Scene {
             return
         }
 
-        gameControls(this, 'playerbullet');
-
-        if (!this.gameState.startTime) {
+        if (this.gameState.startTime === 0) {
             this.gameState.startTime = gameTime;
-        }
-        
-        if (!this.gameState.enemies && gameTime - this.gameState.startTime > ENEMY_DISPLAY_DELAY) {
-            addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
-            genEnemyBullets(this, 'enemybullet');
-            addColliders(this);
+            return;
         }
 
-        if (this.gameState.enemies) {
-            genEnemyMovement(this);
+        if (gameTime - this.gameState.startTime < this.gameState.enemyFireDelay) {
+            return;
         }
 
+        if(this.gameState.pelletsLoop.paused) {
+            this.gameState.pelletsLoop.paused = false;
+        }
+
+        if(!this.gameState.enemies.visible) {
+            this.gameState.enemies.setVisible(true);
+        }
+        gameControls(this, 'playerbullet');
+        genEnemyMovement(this);
     }
 
 }

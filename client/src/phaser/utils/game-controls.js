@@ -12,7 +12,7 @@ export function gameControls(scene, playerBullet) {
             }
             
             // player shot
-            if (Input.Keyboard.JustDown(scene.gameState.cursors.space)) {
+            if (scene.gameState.enemies && Input.Keyboard.JustDown(scene.gameState.cursors.space)) {
                 genPlayerBullets(scene, playerBullet);   
             }
 }

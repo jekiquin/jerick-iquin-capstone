@@ -1,7 +1,9 @@
-import { Scene, Input } from 'phaser';
-import { addPlayer, addPlatform, addEnemies, addColliders, genEnemyBullets } from '../utils/game-scene-utils';
+import { Scene } from 'phaser';
+import { addPlayer, addPlatform, addEnemies, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls'
 
+const ENEMY_DISPLAY_DELAY = 3500;
+const ENEMY_ATTACK_DELAY = 4000;
 // width: 540,
 // height: 720
 
@@ -9,7 +11,9 @@ class GameScene extends Scene {
     constructor() {
         super({key: 'GameScene'});
         this.gameState = {
-            score: 0,
+            startTime: 0,
+            enemyVelocity: 1,
+            score: 0
         }
     }
 
@@ -28,18 +32,35 @@ class GameScene extends Scene {
     }
 
     create() {
-        const {gameState} = this;
-        gameState.cursors = this.input.keyboard.createCursorKeys();
+        this.gameState.active = true;
+        this.gameState.cursors = this.input.keyboard.createCursorKeys();
 
         addPlayer(this, 'ship', 'playerbullet');
         addPlatform(this, 'platform');
-        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
-        genEnemyBullets(this, 'enemybullet')
-        addColliders(this);
+        this.physics.add.collider(this.gameState.player, this.gameState.platforms);
     }
 
-    update() {
-        gameControls(this, 'playerbullet')
+    update(gameTime) {
+        if (!this.gameState.active) {
+            return
+        }
+
+        gameControls(this, 'playerbullet');
+
+        if (!this.gameState.startTime) {
+            this.gameState.startTime = gameTime;
+        }
+        
+        if (!this.gameState.enemies && gameTime - this.gameState.startTime > ENEMY_DISPLAY_DELAY) {
+            addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
+            genEnemyBullets(this, 'enemybullet');
+            addColliders(this);
+        }
+
+        if (this.gameState.enemies) {
+            genEnemyMovement(this);
+        }
+
     }
 
 }

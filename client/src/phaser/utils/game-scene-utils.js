@@ -16,9 +16,8 @@ export function addPlatform(scene) {
 export function addEnemies(scene, enemies) {
     scene.gameState.enemies = scene.physics.add.group();
     for (let yEnemies=1; yEnemies<6; yEnemies++) {
-        const yOff = yEnemies === 1 ? 150 : 50;
         for (let xEnemies=1; xEnemies<11; xEnemies++) {
-            scene.gameState.enemies.create(50*xEnemies, yOff*yEnemies, enemies[yEnemies-1]).setScale(.3).setGravityY(-200);
+            scene.gameState.enemies.create(50*xEnemies, 50+50*yEnemies, enemies[yEnemies-1]).setScale(.3).setGravityY(-200);
         }
     }
 
@@ -26,11 +25,13 @@ export function addEnemies(scene, enemies) {
 }
 
 export function addColliders(scene) {
-    scene.physics.add.collider(scene.gameState.player, scene.gameState.platforms);
-
     scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (bullet, enemy) => {
         enemy.destroy();
         bullet.destroy();
+    });
+
+    scene.physics.add.overlap(scene.gameState.pellets, scene.gameState.player, () => {
+        gamePlayEnd(scene);
     })
 }
 
@@ -47,8 +48,39 @@ export function genEnemyBullets(scene, enemyBullet) {
     });
 }
 
+export function genEnemyMovement(scene) {
+    const totalEnemies = scene.gameState.enemies.getChildren().length;
+    if(!totalEnemies) {
+        gamePlayEnd(scene);
+        return
+    }
+
+    scene.gameState.enemies.getChildren().forEach(enemy => {
+        enemy.x += scene.gameState.enemyVelocity;
+    });
+
+    const sortedEnemies = scene.gameState.enemies.getChildren().sort((a, b) => a.x - b.x);
+    scene.gameState.leftMostBug = sortedEnemies[0];
+    scene.gameState.rightMostBug = sortedEnemies[sortedEnemies.length - 1];
+    if(scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530) {
+        scene.gameState.enemyVelocity *= -1;
+        scene.gameState.enemies.getChildren().forEach(enemy => {
+            enemy.y += 5;
+        })
+    }
+}
+
 function genPellet(gameState, pellets, enemyBullet) {
     const randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
+    if(!randomBug) {
+        return;
+    }
     pellets.create(randomBug.x, randomBug.y, enemyBullet).setScale(.3);
 }
 
+function gamePlayEnd(scene) {
+    scene.gameState.active = false;
+    scene.physics.pause();
+    scene.gameState.enemyVelocity = 1;
+    scene.gameState.pelletsLoop.destroy();
+}

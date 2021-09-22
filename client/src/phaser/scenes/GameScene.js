@@ -11,7 +11,6 @@ class GameScene extends Scene {
         this.gameState = {
             startTime: 0,
             enemyVelocity: 1,
-            enemyVelocityFactor: 1,
             enemyFireDelay: 3500,
             score: 0
         }
@@ -45,7 +44,6 @@ class GameScene extends Scene {
         addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
         addPlatform(this, 'platform');
         addColliders(this);
-        this.physics.add.collider(this.gameState.player, this.gameState.platforms);
         genEnemyBullets(this, 'enemybullet');
     }
 

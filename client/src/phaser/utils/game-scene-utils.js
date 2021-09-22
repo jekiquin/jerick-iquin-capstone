@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-const FACTOR_REF = 50;
+const SPEEDUP = 3;
 
 export function addPlayer(scene, player) {
     scene.gameState.player = scene.physics.add.sprite(270,200, player).setScale(.17);
@@ -29,6 +29,16 @@ export function addEnemies(scene, enemies) {
 }
 
 export function addColliders(scene) {
+    scene.physics.add.collider(scene.gameState.player, scene.gameState.platforms);
+
+    scene.physics.add.overlap(scene.gameState.playerBullet, scene.gameState.pellets, (bullet, pellet) => {
+        if (Math.random() < 0.15) {
+            bullet.destroy();
+            pellet.destroy();
+        }
+    });
+
+
     scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (bullet, enemy) => {
         enemy.destroy();
         bullet.destroy();
@@ -41,6 +51,10 @@ export function addColliders(scene) {
     scene.physics.add.overlap(scene.gameState.enemies, scene.gameState.player, () => {
         gamePlayEnd(scene);
     })
+
+    scene.physics.add.collider(scene.gameState.platforms, scene.gameState.enemies, () => {
+        gamePlayEnd(scene);
+    })
 }
 
 export function genPlayerBullets(scene, playerBullet) {
@@ -49,7 +63,7 @@ export function genPlayerBullets(scene, playerBullet) {
 
 export function genEnemyBullets(scene, enemyBullet) {
     scene.gameState.pelletsLoop = scene.time.addEvent({
-        delay: 500,
+        delay: 300,
         callback: () => genPellet(scene.gameState, scene.gameState.pellets, enemyBullet),
         callbackScope: scene,
         loop: true,
@@ -64,19 +78,25 @@ export function genEnemyMovement(scene) {
         return
     }
 
-    scene.gameState.enemies.getChildren().forEach(enemy => {
-        enemy.x += scene.gameState.enemyVelocity;
-    });
+    if (totalEnemies === 1 && Math.abs(scene.gameState.enemyVelocity) !== SPEEDUP) {
+        scene.gameState.enemyVelocity *= SPEEDUP;
+    }
 
     const sortedEnemies = scene.gameState.enemies.getChildren().sort((a, b) => a.x - b.x);
     scene.gameState.leftMostBug = sortedEnemies[0];
     scene.gameState.rightMostBug = sortedEnemies[sortedEnemies.length - 1];
+
     if(scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530) {
         scene.gameState.enemyVelocity *= -1;
-        scene.gameState.enemies.getChildren().forEach(enemy => {
-            enemy.y += 10;
-        })
     }
+
+    scene.gameState.enemies.getChildren().forEach(enemy => {
+        if(scene.gameState.leftMostBug.x < 10 || scene.gameState.rightMostBug.x > 530) {
+            enemy.y += 10; 
+        }
+        enemy.x += scene.gameState.enemyVelocity;
+    });
+
 }
 
 function genPellet(gameState, pellets, enemyBullet) {

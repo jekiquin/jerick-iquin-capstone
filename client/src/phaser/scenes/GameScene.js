@@ -1,17 +1,19 @@
 import { Scene } from 'phaser';
-import { addPlayer, addPlatform, addEnemies, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
+import { addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls'
 
 // width: 540,
 // height: 720
+const ENEMY_FIRE_DELAY = 3500;
+const BOSS_DELAY = 10000;
 
 class GameScene extends Scene {
     constructor() {
         super({key: 'GameScene'});
         this.gameState = {
             startTime: 0,
+            bossStart: 0,
             enemyVelocity: 1,
-            enemyFireDelay: 3500,
             score: 0
         }
     }
@@ -26,6 +28,7 @@ class GameScene extends Scene {
         this.load.image('bug3', 'assets/sprites/bug3.png');
         this.load.image('bug4', 'assets/sprites/bug4.png');
         this.load.image('bug5', 'assets/sprites/bug5.png');
+        this.load.image('boss', 'assets/sprites/boss.png');
         this.load.image('enemybullet', 'assets/sprites/enemybullet.png');
         this.load.image('platform', 'assets/images/platform.png');
     }
@@ -41,10 +44,11 @@ class GameScene extends Scene {
         })
 
         addPlayer(this, 'ship', 'playerbullet');
-        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
         addPlatform(this, 'platform');
-        addColliders(this);
+        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
         genEnemyBullets(this, 'enemybullet');
+        addBoss(this, 'boss');
+        addColliders(this);
     }
 
     update(gameTime) {
@@ -57,8 +61,12 @@ class GameScene extends Scene {
             return;
         }
 
-        if (gameTime - this.gameState.startTime < this.gameState.enemyFireDelay) {
+        if (gameTime - this.gameState.startTime < ENEMY_FIRE_DELAY) {
             return;
+        }
+
+        if (this.gameState.bossStart === 0) {
+            this.gameState.bossStart = gameTime;
         }
 
         if(this.gameState.pelletsLoop.paused) {
@@ -68,6 +76,13 @@ class GameScene extends Scene {
         if(!this.gameState.enemies.visible) {
             this.gameState.enemies.setVisible(true);
         }
+
+        if (gameTime - this.gameState.startTime > BOSS_DELAY && !this.gameState.bossMove.hasStarted) {
+            this.gameState.boss.setVisible(true);
+            this.gameState.bossMove.play();
+            
+        }
+        
         gameControls(this, 'playerbullet');
         genEnemyMovement(this);
     }

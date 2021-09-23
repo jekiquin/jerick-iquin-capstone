@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addPaddles, addPlatforms, initScores, displayScores } from '../utils/game-scene-utils';
+import { addPaddles, addPlatforms, addColliders, initScores, displayScores } from '../utils/game-scene-utils';
 import { initKeys, gameControls } from '../utils/game-controls';
 
 const MAXSCORE = 15;
@@ -22,8 +22,9 @@ class GameScene extends Scene {
     create() {
         this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'bg').setScale(3.5,3);
         
-        addPlatforms(this, 'platform')
+        addPlatforms(this, 'platform');
         addPaddles(this);
+        addColliders(this);
         initScores(this);
         initKeys(this);
         

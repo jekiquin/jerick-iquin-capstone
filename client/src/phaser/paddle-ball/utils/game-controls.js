@@ -1,8 +1,7 @@
 // import { Input } from 'phaser';
 
 export function initKeys(scene) {
-    scene.gameState.keys = scene.input.keyboard.addKeys('W, S, up, down');
-    console.log(scene.gameState.keys)
+    scene.gameState.keys = scene.input.keyboard.addKeys('W, S, up, down, space');
 }
 
 export function gameControls(scene) {
@@ -20,5 +19,9 @@ export function gameControls(scene) {
 
     if (scene.gameState.keys.S.isDown) {
         scene.gameState.player1.y += 10;
+    }
+
+    if (scene.gameState.keys.space.isDown) {
+    //    ball movement
     }
 }

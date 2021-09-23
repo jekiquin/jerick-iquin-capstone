@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
+import { addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls'
 
 // width: 540,
@@ -14,7 +14,8 @@ class GameScene extends Scene {
             startTime: 0,
             bossStart: 0,
             enemyVelocity: 1,
-            score: 0
+            score: 0,
+            highScore: 0
         }
     }
 
@@ -43,6 +44,7 @@ class GameScene extends Scene {
             }
         })
 
+        addTexts(this);
         addPlayer(this, 'ship', 'playerbullet');
         addPlatform(this, 'platform');
         addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);

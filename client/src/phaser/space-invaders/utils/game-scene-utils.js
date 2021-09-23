@@ -3,6 +3,11 @@ import Phaser from 'phaser';
 const SPEEDUP = 5;
 const SPEEDDROP = 60;
 
+export function addTexts(scene) {
+    scene.gameState.scoreText = scene.add.text(270, 700, `Score: ${scene.gameState.score}`).setOrigin(1,0);
+    scene.gameState.highScoreText = scene.add.text(540, 700, `High Score: ${scene.gameState.highScore}`).setOrigin(1.2,0);
+}
+
 export function addPlayer(scene, player) {
     scene.gameState.player = scene.physics.add.sprite(270,200, player).setScale(.17);
     scene.gameState.player.setPosition(scene.cameras.main.centerX, scene.cameras.main.centerY);
@@ -13,7 +18,7 @@ export function addPlayer(scene, player) {
 
 export function addPlatform(scene) {
     scene.gameState.platforms = scene.physics.add.staticGroup();
-    scene.gameState.platforms.create(270, 719, 'platform').refreshBody();
+    scene.gameState.platforms.create(270, 700, 'platform').setScale(1, 0.1).refreshBody();
 }
 
 export function addEnemies(scene, enemies) {
@@ -50,13 +55,34 @@ export function addColliders(scene) {
 
     scene.physics.add.overlap(scene.gameState.playerBullet, scene.gameState.pellets, (bullet, pellet) => {
         if (Math.random() < 0.15) {
+            scene.gameState.score += 1;
+            displayScores(scene);
             bullet.destroy();
             pellet.destroy();
         }
     });
 
 
-    scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (enemy, bullet) => {
+    scene.physics.add.collider(scene.gameState.playerBullet, scene.gameState.enemies, (bullet, enemy) => {
+        switch(enemy.texture.key) {
+            case 'bug1':
+                scene.gameState.score += 20;
+                break;
+            case 'bug2':
+                scene.gameState.score += 15;
+                break;
+            case 'bug3':
+                scene.gameState.score += 10;
+                break;
+            case 'bug4':
+                scene.gameState.score += 5;
+                break;
+            case 'bug5':
+            default:
+                scene.gameState.score += 2;
+                break;
+        }
+        displayScores(scene);
         enemy.destroy();
         bullet.destroy();
         // console.log(enemy.texture.key);
@@ -66,6 +92,8 @@ export function addColliders(scene) {
         bullet.destroy();
         scene.gameState.bossMove.stop(0);
         scene.gameState.bossStart = 0;
+        scene.gameState.score += 50;
+        displayScores(scene);
     });
 
     scene.physics.add.overlap(scene.gameState.pellets, scene.gameState.player, () => {
@@ -104,7 +132,7 @@ export function genEnemyMovement(scene) {
         return
     }
 
-    let drop = 15;
+    let drop = 10;
     if (totalEnemies === 1 && Math.abs(scene.gameState.enemyVelocity) !== SPEEDUP) {
         scene.gameState.enemyVelocity *= SPEEDUP;
         drop = SPEEDDROP;
@@ -129,6 +157,16 @@ export function genEnemyMovement(scene) {
 
 }
 
+function displayScores(scene) {
+    scene.gameState.scoreText.setText(`Score: ${scene.gameState.score}`);
+    scene.gameState.highScore = getHighScores(scene.gameState.score, scene.gameState.highScore);
+    scene.gameState.highScoreText.setText(`High Score: ${scene.gameState.highScore}`);
+}
+
+function getHighScores(score, highScore) {
+    return highScore >= score ? highScore : score;
+}
+
 function genPellet(gameState, pellets, enemyBullet) {
     const randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
     if(!randomBug) {
@@ -146,4 +184,5 @@ function gamePlayEnd(scene) {
     scene.gameState.startTime = 0;
     scene.gameState.bossMove.stop();
     scene.gameState.bossStart = 0;
+    scene.gameState.score = 0;
 }

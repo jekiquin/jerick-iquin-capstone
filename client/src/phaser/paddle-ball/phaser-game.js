@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-// import GameScene from './scenes/GameScene';
+import GameScene from './scenes/GameScene';
 // import HomeScene from './scenes/HomeScene';
 
 
@@ -21,5 +21,5 @@ export const gameConfig = {
             debug: false
         }
     },
-    scene: {}
+    scene: [GameScene]
 }

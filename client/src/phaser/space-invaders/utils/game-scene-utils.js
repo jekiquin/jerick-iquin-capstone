@@ -2,10 +2,11 @@ import Phaser from 'phaser';
 
 const SPEEDUP = 5;
 const SPEEDDROP = 60;
+const TEXT_STYLE = {fontFamily: 'Game', stroke: '#FF0000', strokeThickness: 2};
 
 export function addTexts(scene) {
-    scene.gameState.scoreText = scene.add.text(10, 700, `Score: ${scene.gameState.score}`, {fontFamily: 'Game', fontSize: '12px'}).setOrigin(0,0);
-    scene.gameState.highScoreText = scene.add.text(530, 700, `High Score: ${scene.gameState.highScore}`, {fontFamily: 'Game', fontSize: '12px'}).setOrigin(1,0);
+    scene.gameState.scoreText = scene.add.text(10, 700, `Score: ${scene.gameState.score}`, {...TEXT_STYLE, fontSize: '12px'}).setOrigin(0,0);
+    scene.gameState.highScoreText = scene.add.text(530, 700, `High Score: ${scene.gameState.highScore}`, {...TEXT_STYLE, fontSize: '12px'}).setOrigin(1,0);
 
     // deleting texts
     scene.gameState.gameOverText?.destroy();
@@ -21,9 +22,9 @@ export function addPlayer(scene, player) {
     scene.gameState.playerBullet = scene.physics.add.group();
 }
 
-export function addPlatform(scene) {
+export function addPlatform(scene, platform) {
     scene.gameState.platforms = scene.physics.add.staticGroup();
-    scene.gameState.platforms.create(270, 700, 'platform').setScale(1, 0.01).refreshBody();
+    scene.gameState.platforms.create(270, 700, platform).setScale(1, 0.01).refreshBody();
 }
 
 export function addEnemies(scene, enemies) {
@@ -194,9 +195,9 @@ function gamePlayEnd(scene) {
 }
 
 function gameOverTexts(scene) {
-    scene.gameState.gameOverText = scene.add.text(270, 360, 'GAME OVER! PLAY AGAIN?', {fontFamily: 'Game'}).setOrigin(0.5, 0.5);
-    scene.gameState.yesText = scene.add.text(270, 400, 'YES', {fontFamily: 'Game'}).setOrigin(0.5, 0.5).setInteractive();
-    scene.gameState.noText = scene.add.text(270, 440, 'NO', {fontFamily: 'Game'}).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.gameOverText = scene.add.text(270, 360, 'GAME OVER! PLAY AGAIN?', TEXT_STYLE).setOrigin(0.5, 0.5);
+    scene.gameState.yesText = scene.add.text(270, 400, 'YES', TEXT_STYLE).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.noText = scene.add.text(270, 440, 'NO', TEXT_STYLE).setOrigin(0.5, 0.5).setInteractive();
 
     hoverOverTexts(scene.gameState.yesText);
     hoverOverTexts(scene.gameState.noText);
@@ -206,7 +207,7 @@ function gameOverTexts(scene) {
     })
 
     scene.gameState.noText.on('pointerup', () => {
-        scene.scene.start('HomeScene')
+        scene.scene.start('HomeScene');
     })
 }
 

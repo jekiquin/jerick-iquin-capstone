@@ -17,7 +17,8 @@ export const gameConfig = {
         default: 'arcade',
         arcade: {
             gravity: {y: 200},
-            enableBody: true
+            enableBody: true,
+            debug: false
         }
     },
     scene: [HomeScene, GameScene]

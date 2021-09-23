@@ -23,7 +23,7 @@ export function addPlayer(scene, player) {
 
 export function addPlatform(scene) {
     scene.gameState.platforms = scene.physics.add.staticGroup();
-    scene.gameState.platforms.create(270, 700, 'platform').setScale(1, 0.1).refreshBody();
+    scene.gameState.platforms.create(270, 700, 'platform').setScale(1, 0.01).refreshBody();
 }
 
 export function addEnemies(scene, enemies) {
@@ -203,6 +203,10 @@ function gameOverTexts(scene) {
 
     scene.gameState.yesText.on('pointerup', () => {
         scene.scene.restart();
+    })
+
+    scene.gameState.noText.on('pointerup', () => {
+        scene.scene.start('HomeScene')
     })
 }
 

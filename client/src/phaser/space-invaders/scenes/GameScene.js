@@ -32,11 +32,13 @@ class GameScene extends Scene {
         this.load.image('boss', 'assets/sprites/boss.png');
         this.load.image('enemybullet', 'assets/sprites/enemybullet.png');
         this.load.image('platform', 'assets/images/platform.png');
+        this.load.image('bg', 'assets/images/spaceinvadersbg.jpg');
     }
 
     create() {
         this.gameState.active = true;
         this.gameState.cursors = this.input.keyboard.createCursorKeys();
+        this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'bg').setOrigin(0.5, 0.5).setScale(1, 1.2);
 
         addTexts(this);
         addPlayer(this, 'ship', 'playerbullet');

@@ -4,8 +4,8 @@ const SPEEDUP = 5;
 const SPEEDDROP = 60;
 
 export function addTexts(scene) {
-    scene.gameState.scoreText = scene.add.text(270, 700, `Score: ${scene.gameState.score}`).setOrigin(1,0);
-    scene.gameState.highScoreText = scene.add.text(540, 700, `High Score: ${scene.gameState.highScore}`).setOrigin(1.2,0);
+    scene.gameState.scoreText = scene.add.text(10, 700, `Score: ${scene.gameState.score}`, {fontFamily: 'Game', fontSize: '12px'}).setOrigin(0,0);
+    scene.gameState.highScoreText = scene.add.text(530, 700, `High Score: ${scene.gameState.highScore}`, {fontFamily: 'Game', fontSize: '12px'}).setOrigin(1,0);
 
     // deleting texts
     scene.gameState.gameOverText?.destroy();
@@ -194,9 +194,9 @@ function gamePlayEnd(scene) {
 }
 
 function gameOverTexts(scene) {
-    scene.gameState.gameOverText = scene.add.text(270, 360, 'GAME OVER! PLAY AGAIN?', {fontSize: '24px'}).setOrigin(0.5, 0.5);
-    scene.gameState.yesText = scene.add.text(270, 400, 'YES', {fontSize: '24px'}).setOrigin(0.5, 0.5).setInteractive();
-    scene.gameState.noText = scene.add.text(270, 440, 'NO', {fontSize: '24px'}).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.gameOverText = scene.add.text(270, 360, 'GAME OVER! PLAY AGAIN?', {fontFamily: 'Game'}).setOrigin(0.5, 0.5);
+    scene.gameState.yesText = scene.add.text(270, 400, 'YES', {fontFamily: 'Game'}).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.noText = scene.add.text(270, 440, 'NO', {fontFamily: 'Game'}).setOrigin(0.5, 0.5).setInteractive();
 
     hoverOverTexts(scene.gameState.yesText);
     hoverOverTexts(scene.gameState.noText);

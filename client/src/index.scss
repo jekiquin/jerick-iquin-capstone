@@ -1,5 +1,8 @@
+@use './partial/typography';
+
 body {
     box-sizing: border-box;
+    font-family: 'Game';
 }
 
 *, *::after, *::before {

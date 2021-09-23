@@ -1,11 +1,11 @@
 import {Route, Switch} from 'react-router-dom';
-import GamePage from './pages/GamePage/GamePage';
+import SpaceInvaders from './pages/SpaceInvaders/SpaceInvaders';
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path='/game' component={GamePage} />
+        <Route path='/space-invaders' component={SpaceInvaders} />
       </Switch>
     </div>
   );

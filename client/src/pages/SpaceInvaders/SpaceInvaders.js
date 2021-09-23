@@ -1,10 +1,10 @@
 import { Component, createRef } from 'react';
 import { IonPhaser } from '@ion-phaser/react';
-import { gameConfig } from '../../phaser/phaser-game';
-import './GamePage.scss';
+import { gameConfig } from '../../phaser/space-invaders/phaser-game';
+import './SpaceInvaders.scss';
 
 
-class GamePage extends Component {
+class SpaceInvaders extends Component {
     state = {
         gameInstance: gameConfig
     }
@@ -21,4 +21,4 @@ class GamePage extends Component {
     }
 }
 
-export default GamePage;
+export default SpaceInvaders;

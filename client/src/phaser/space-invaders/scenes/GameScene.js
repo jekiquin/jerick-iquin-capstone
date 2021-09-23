@@ -38,12 +38,6 @@ class GameScene extends Scene {
         this.gameState.active = true;
         this.gameState.cursors = this.input.keyboard.createCursorKeys();
 
-        this.input.on('pointerup', () => {
-            if (!this.gameState.active) {
-                this.scene.restart();
-            }
-        })
-
         addTexts(this);
         addPlayer(this, 'ship', 'playerbullet');
         addPlatform(this, 'platform');

@@ -6,6 +6,11 @@ const SPEEDDROP = 60;
 export function addTexts(scene) {
     scene.gameState.scoreText = scene.add.text(270, 700, `Score: ${scene.gameState.score}`).setOrigin(1,0);
     scene.gameState.highScoreText = scene.add.text(540, 700, `High Score: ${scene.gameState.highScore}`).setOrigin(1.2,0);
+
+    // deleting texts
+    scene.gameState.gameOverText?.destroy();
+    scene.gameState.yesText?.destroy();
+    scene.gameState.noText?.destroy();
 }
 
 export function addPlayer(scene, player) {
@@ -185,4 +190,28 @@ function gamePlayEnd(scene) {
     scene.gameState.bossMove.stop();
     scene.gameState.bossStart = 0;
     scene.gameState.score = 0;
+    gameOverTexts(scene);
+}
+
+function gameOverTexts(scene) {
+    scene.gameState.gameOverText = scene.add.text(270, 360, 'GAME OVER! PLAY AGAIN?', {fontSize: '24px'}).setOrigin(0.5, 0.5);
+    scene.gameState.yesText = scene.add.text(270, 400, 'YES', {fontSize: '24px'}).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.noText = scene.add.text(270, 440, 'NO', {fontSize: '24px'}).setOrigin(0.5, 0.5).setInteractive();
+
+    hoverOverTexts(scene.gameState.yesText);
+    hoverOverTexts(scene.gameState.noText);
+
+    scene.gameState.yesText.on('pointerup', () => {
+        scene.scene.restart();
+    })
+}
+
+function hoverOverTexts(textObject) {
+    textObject.on('pointerover', () => {
+        textObject.setScale(1.2);
+    });
+
+    textObject.on('pointerout', () => {
+        textObject.setScale(1);
+    })
 }

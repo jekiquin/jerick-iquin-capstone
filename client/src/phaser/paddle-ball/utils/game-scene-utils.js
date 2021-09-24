@@ -32,13 +32,26 @@ export function addPlatforms(scene, platform) {
 export function initScores(scene) {
     scene.gameState.Score1 = 0;
     scene.gameState.Score2 = 0;
-    scene.gameState.player1Display = scene.add.text(scene.cameras.main.centerX-70, 50, scoreDisplay(`${scene.gameState.Score1}`), TEXT_STYLE);
-    scene.gameState.player2Display = scene.add.text(scene.cameras.main.centerX+70, 50, scoreDisplay(`${scene.gameState.Score2}`), TEXT_STYLE).setOrigin(1,0);
+
 }
 
-export function displayUpdatedScores(scene) {
-    scene.gameState.player1Display.setText(scoreDisplay(`${scene.gameState.Score1}`));
-    scene.gameState.player2Display.setText(scoreDisplay(`${scene.gameState.Score2}`))
+export function ballOut(scene) {
+    if (scene.gameState.ball.x < 0 || scene.gameState.ball.x > scene.cameras.main.displayWidth) {
+        scene.gameState.player1ToServe = !(scene.gameState.ball.x < 0);
+        scene.gameState.ballActive = !scene.gameState.ballActive;
+        const ball = scene.gameState.ball.texture.key;
+        updateScore(scene);
+        addBall(scene, ball);
+        addBallCollider(scene);
+        updateServeMessage(scene);
+        displayUpdatedScores(scene)
+    }
+}
+
+export function initTextDisplay(scene) {
+    scene.gameState.player1Display = scene.add.text(scene.cameras.main.centerX-70, 50, scoreDisplay(`${scene.gameState.Score1}`), TEXT_STYLE);
+    scene.gameState.player2Display = scene.add.text(scene.cameras.main.centerX+70, 50, scoreDisplay(`${scene.gameState.Score2}`), TEXT_STYLE).setOrigin(1,0);
+    scene.gameState.playerServerMessage = scene.add.text(70, 50, 'Player 1 to serve!', {...TEXT_STYLE, fontSize: '12px'});
 }
 
 export function addColliders(scene) {
@@ -51,16 +64,14 @@ export function addColliders(scene) {
     addBallCollider(scene)
 }
 
-export function ballOut(scene) {
-    if (scene.gameState.ball.x < 0 || scene.gameState.ball.x > scene.cameras.main.displayWidth) {
-        scene.gameState.player1ToServe = !(scene.gameState.ball.x < 0);
-        scene.gameState.ballActive = !scene.gameState.ballActive;
-        const ball = scene.gameState.ball.texture.key;
-        updateScore(scene);
-        addBall(scene, ball);
-        addBallCollider(scene);
-        console.log(scene.gameState.Score2);
-    }
+function displayUpdatedScores(scene) {
+    scene.gameState.player1Display.setText(scoreDisplay(`${scene.gameState.Score1}`));
+    scene.gameState.player2Display.setText(scoreDisplay(`${scene.gameState.Score2}`))
+}
+
+function updateServeMessage(scene) {
+    const playerToServer = scene.gameState.player1ToServe ? 'Player 1' : 'Player 2';
+    scene.gameState.playerServerMessage.setText(`${playerToServer} to serve!`);
 }
 
 function updateScore(scene) {

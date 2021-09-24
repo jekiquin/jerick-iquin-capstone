@@ -50,8 +50,14 @@ export function ballOut(scene) {
 
 export function initTextDisplay(scene) {
     scene.gameState.player1Display = scene.add.text(scene.cameras.main.centerX-70, 50, scoreDisplay(`${scene.gameState.Score1}`), TEXT_STYLE);
+    
     scene.gameState.player2Display = scene.add.text(scene.cameras.main.centerX+70, 50, scoreDisplay(`${scene.gameState.Score2}`), TEXT_STYLE).setOrigin(1,0);
+    
     scene.gameState.playerServerMessage = scene.add.text(70, 50, 'Player 1 to serve!', {...TEXT_STYLE, fontSize: '12px'});
+
+    scene.gameState.resetButton = scene.add.text(scene.cameras.main.displayWidth-70, 50, 'RESET HERE', {...TEXT_STYLE, fontSize: '12px', fill: '#ff0000'}).setInteractive().setOrigin(1,0);
+
+    buttonInteraction(scene);
 }
 
 export function addColliders(scene) {
@@ -99,5 +105,19 @@ function addBallCollider(scene) {
     scene.physics.add.collider(scene.gameState.ball, scene.gameState.player2, () => {
         const velocityY = scene.gameState.ball.body.velocity.y + scene.gameState.player2.body.velocity.y/2;
         scene.gameState.ball.setVelocityY(velocityY);
+    })
+}
+
+function buttonInteraction(scene) {
+    scene.gameState.resetButton.on('pointerover', () => {
+        scene.gameState.resetButton.setScale(1.2);
+    });
+
+    scene.gameState.resetButton.on('pointerout', () => {
+        scene.gameState.resetButton.setScale(1);
+    })
+
+    scene.gameState.resetButton.on('pointerup', () => {
+        scene.scene.restart();
     })
 }

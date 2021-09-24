@@ -7,10 +7,7 @@ const MAXSCORE = 15;
 class GameScene extends Scene {
     constructor(){
         super({key: 'GameScene'});
-        this.gameState = {
-            ballActive: false,
-            player1ToServe: true
-        };
+        this.gameState = {};
     }
 
     preload() {
@@ -21,6 +18,8 @@ class GameScene extends Scene {
 
     create() {
         this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'bg').setScale(3.5,3);
+        this.gameState.ballActive = false;
+        this.gameState.player1ToServe = true
         
         addPlatforms(this, 'platform');
         addPaddles(this, 'paddle');

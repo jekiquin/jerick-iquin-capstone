@@ -5,8 +5,8 @@ function HomePage() {
         <main>
             <ul className='game-library'>
                 <li className='game'><Link to='/space-invaders'>Space Invaders</Link></li>
-                <li className='game'><Link to='/Pong'>Pong</Link></li>
-                <li className='game'></li>
+                <li className='game'><Link to='/pong'>Pong</Link></li>
+                <li className='game'><Link to='/breakout'>Breakout</Link></li>
             </ul>
         </main>
     )

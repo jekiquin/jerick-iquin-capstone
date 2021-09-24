@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 const TEXT_STYLE = {fontFamily: 'Game', fontSize: '24px'};
-
+const MAXSCORE = 0;
 
 export function addPaddles(scene, paddle) {
     const offset = 60;
@@ -86,6 +86,58 @@ function updateScore(scene) {
     } else if (scene.gameState.ball.x > scene.cameras.main.displayWidth) {
         scene.gameState.Score1 += 1;
     }
+
+    checkWinner(scene)
+}
+
+function checkWinner(scene) {
+    const {Score1, Score2} = scene.gameState;
+    if (Score1 < MAXSCORE && Score2 < MAXSCORE) {
+        return;
+    }
+
+    scene.gameState.resetButton.disableInteractive();
+    if (Score1 === MAXSCORE) {
+        endGame(scene, 'Player 1');
+    }
+
+    if (Score2 === MAXSCORE) {
+        endGame(scene, 'Player 2');
+    }
+
+}
+
+function endGame(scene, winner) {
+    const textStyle = {...TEXT_STYLE, fontSize: '32px', fill: '#ff0000', stroke: '#ffffff', strokeThickness: 3}
+    scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY/2, `${winner} won!\n\n Play again?`, textStyle).setOrigin(0.5, 0.5);
+
+    scene.gameState.yesText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 50, 'Yes', textStyle).setOrigin(0.5, 0.5).setInteractive();
+
+    scene.gameState.noText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 120, 'No', textStyle).setOrigin(0.5, 0.5).setInteractive();
+
+    optionsInteractive(scene);
+}
+
+function optionsInteractive(scene) {
+    hoverButton(scene.gameState.yesText);
+    scene.gameState.yesText.on('pointerup', () => {
+        scene.scene.restart();
+    });
+
+    hoverButton(scene.gameState.noText);
+    scene.gameState.noText.on('pointerup', () => {
+        // go to homepage
+    });
+}
+
+function hoverButton(button) {
+    button.on('pointerover', () => {
+        button.setScale(1.2);
+    });
+
+    button.on('pointerout', () => {
+        button.setScale(1);
+    });
 }
 
 function scoreDisplay(score) {
@@ -109,7 +161,7 @@ function addBallCollider(scene) {
 }
 
 function buttonInteraction(scene) {
-    scene.gameState.resetButton.on('pointerover', () => {
+    scene.gameState.pointerOverHandler = scene.gameState.resetButton.on('pointerover', () => {
         scene.gameState.resetButton.setScale(1.2);
     });
 

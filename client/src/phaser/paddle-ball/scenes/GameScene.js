@@ -1,5 +1,5 @@
 import { Scene, Physics } from 'phaser';
-import { addPaddles, addPlatforms, addBall, addColliders, initScores, displayScores } from '../utils/game-scene-utils';
+import { addPaddles, addPlatforms, addBall, addColliders, initScores, displayScores, ballOut } from '../utils/game-scene-utils';
 import { initKeys, gameControls } from '../utils/game-controls';
 
 const MAXSCORE = 15;
@@ -34,6 +34,7 @@ class GameScene extends Scene {
     update() {
         gameControls(this); 
         displayScores(this);
+        ballOut(this);
     }
 }
 

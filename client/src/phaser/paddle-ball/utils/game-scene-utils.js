@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 const TEXT_STYLE = {fontFamily: 'Game', fontSize: '24px'};
 
+
 export function addPaddles(scene, paddle) {
     const offset = 60;
     scene.gameState.player1 = scene.physics.add.sprite(offset, scene.cameras.main.centerY, paddle).setScale(3);
@@ -15,6 +16,7 @@ export function addPaddles(scene, paddle) {
 
 export function addBall(scene, ball) {
     scene.gameState.ball = scene.physics.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, ball).setScale(6,2/3);
+    scene.gameState.ball.setOrigin(0.5,0.5)
     scene.gameState.ball.setBounce(1,1);
 }
 
@@ -46,14 +48,24 @@ export function addColliders(scene) {
     });
 
     scene.physics.add.collider(scene.gameState.ball, scene.gameState.player1, () => {
-        const velocityY = scene.gameState.ball.body.velocity.y + scene.gameState.player1.body.velocity.y;
+        const velocityY = scene.gameState.ball.body.velocity.y + scene.gameState.player1.body.velocity.y/2;
         scene.gameState.ball.setVelocityY(velocityY);
     });
     scene.physics.add.collider(scene.gameState.ball, scene.gameState.player2, () => {
-        const velocityY = scene.gameState.ball.body.velocity.y + scene.gameState.player2.body.velocity.y;
+        const velocityY = scene.gameState.ball.body.velocity.y + scene.gameState.player2.body.velocity.y/2;
         scene.gameState.ball.setVelocityY(velocityY);
     })
+}
 
+export function ballOut(scene) {
+    if (scene.gameState.ball.x < 0 || scene.gameState.ball.x > scene.cameras.main.displayWidth) {
+        scene.gameState.ball.setVelocity(0,0);
+        scene.gameState.player1ToServe = !(scene.gameState.ball.x < 0)
+        scene.gameState.ball.x = scene.cameras.main.centerX;
+        scene.gameState.ball.y = scene.cameras.main.centerY;
+        scene.gameState.ballActive = !scene.gameState.ballActive;
+        
+    }
 }
 
 function scoreDisplay(score) {

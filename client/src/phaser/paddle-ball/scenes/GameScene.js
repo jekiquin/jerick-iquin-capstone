@@ -2,8 +2,6 @@ import { Scene, Physics } from 'phaser';
 import { addPaddles, addPlatforms, addBall, addColliders, initTextDisplay, initScores, ballOut } from '../utils/game-scene-utils';
 import { initKeys, gameControls } from '../utils/game-controls';
 
-const MAXSCORE = 15;
-
 class GameScene extends Scene {
     constructor(){
         super({key: 'GameScene'});
@@ -19,6 +17,7 @@ class GameScene extends Scene {
     create() {
         this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'bg').setScale(3.5,3);
         this.gameState.ballActive = false;
+        this.gameState.gameActive = true;
         this.gameState.player1ToServe = true
         
         addPlatforms(this, 'platform');
@@ -32,8 +31,11 @@ class GameScene extends Scene {
     }
 
     update() {
-        gameControls(this); 
-        ballOut(this);
+        if (this.gameState.gameActive) {
+            gameControls(this); 
+            ballOut(this);
+        }
+ 
     }
 }
 

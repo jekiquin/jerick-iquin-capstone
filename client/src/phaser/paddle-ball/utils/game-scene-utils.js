@@ -1,7 +1,5 @@
-import Phaser from 'phaser';
-
 const TEXT_STYLE = {fontFamily: 'Game', fontSize: '24px'};
-const MAXSCORE = 0;
+const MAXSCORE = 7;
 
 export function addPaddles(scene, paddle) {
     const offset = 60;
@@ -41,10 +39,11 @@ export function ballOut(scene) {
         scene.gameState.ballActive = !scene.gameState.ballActive;
         const ball = scene.gameState.ball.texture.key;
         updateScore(scene);
+        displayUpdatedScores(scene);
         addBall(scene, ball);
         addBallCollider(scene);
         updateServeMessage(scene);
-        displayUpdatedScores(scene)
+        
     }
 }
 
@@ -72,7 +71,7 @@ export function addColliders(scene) {
 
 function displayUpdatedScores(scene) {
     scene.gameState.player1Display.setText(scoreDisplay(`${scene.gameState.Score1}`));
-    scene.gameState.player2Display.setText(scoreDisplay(`${scene.gameState.Score2}`))
+    scene.gameState.player2Display.setText(scoreDisplay(`${scene.gameState.Score2}`));
 }
 
 function updateServeMessage(scene) {
@@ -97,6 +96,7 @@ function checkWinner(scene) {
     }
 
     scene.gameState.resetButton.disableInteractive();
+    scene.gameState.gameActive = false;
     if (Score1 === MAXSCORE) {
         endGame(scene, 'Player 1');
     }
@@ -111,27 +111,29 @@ function endGame(scene, winner) {
     const textStyle = {...TEXT_STYLE, fontSize: '32px', fill: '#ff0000', stroke: '#ffffff', strokeThickness: 3}
     scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY/2, `${winner} won!\n\n Play again?`, textStyle).setOrigin(0.5, 0.5);
 
-    scene.gameState.yesText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 50, 'Yes', textStyle).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.yes = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 50, 'Yes', textStyle).setOrigin(0.5, 0.5).setInteractive();
 
-    scene.gameState.noText = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 120, 'No', textStyle).setOrigin(0.5, 0.5).setInteractive();
+    scene.gameState.no = scene.add.text(scene.cameras.main.centerX, scene.cameras.main.centerY + 120, 'No', textStyle).setOrigin(0.5, 0.5).setInteractive();
 
     optionsInteractive(scene);
 }
 
 function optionsInteractive(scene) {
-    hoverButton(scene.gameState.yesText);
-    scene.gameState.yesText.on('pointerup', () => {
+    hoverButton(scene.gameState.yes);
+    scene.gameState.yes.on('pointerup', () => {
         scene.scene.restart();
     });
 
-    hoverButton(scene.gameState.noText);
-    scene.gameState.noText.on('pointerup', () => {
+    hoverButton(scene.gameState.no);
+    scene.gameState.no.on('pointerup', () => {
         // go to homepage
     });
 }
 
 function hoverButton(button) {
+    
     button.on('pointerover', () => {
+       
         button.setScale(1.2);
     });
 
@@ -161,7 +163,7 @@ function addBallCollider(scene) {
 }
 
 function buttonInteraction(scene) {
-    scene.gameState.pointerOverHandler = scene.gameState.resetButton.on('pointerover', () => {
+    scene.gameState.resetButton.on('pointerover', () => {
         scene.gameState.resetButton.setScale(1.2);
     });
 

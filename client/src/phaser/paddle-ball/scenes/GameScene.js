@@ -1,4 +1,4 @@
-import { Scene, Physics } from 'phaser';
+import { Scene } from 'phaser';
 import { addPaddles, addPlatforms, addBall, addColliders, initTextDisplay, initScores, ballOut } from '../utils/game-scene-utils';
 import { initKeys, gameControls } from '../utils/game-controls';
 

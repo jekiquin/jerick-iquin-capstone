@@ -63,7 +63,6 @@ export function addColliders(scene) {
     scene.gameState.sideWall.forEach(wall => {
         scene.physics.add.collider(wall, scene.gameState.player1);
         scene.physics.add.collider(wall, scene.gameState.player2);
-        scene.physics.add.collider(wall, scene.gameState.ball);
     });
 
     addBallCollider(scene)
@@ -126,7 +125,7 @@ function optionsInteractive(scene) {
 
     hoverButton(scene.gameState.no);
     scene.gameState.no.on('pointerup', () => {
-        // go to homepage
+        scene.scene.start('HomeScene');
     });
 }
 

@@ -1,6 +1,7 @@
 // import { Input } from 'phaser';
 
 const PADDLE_SPEED = 300;
+const BALLSPEED = 400;
 
 export function initKeys(scene) {
     scene.gameState.keys = scene.input.keyboard.addKeys('W, S, up, down, space');
@@ -27,5 +28,7 @@ export function gameControls(scene) {
 
     if (scene.gameState.keys.space.isDown) {
     //    ball movement
+        const velocityX = scene.gameState.player1ToServe ? -BALLSPEED : BALLSPEED;
+        scene.gameState.ball.setVelocity(velocityX,0);
     }
 }

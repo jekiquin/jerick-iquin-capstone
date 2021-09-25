@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { gameInit, addPlayer, addBall, addPlatform, addBricks, addColliders } from '../utils/game-scene-utils';
+import { gameInit, addPlayer, addBall, addPlatform, addBricks, initTextDisplay, addColliders, updateScoreDisplay } from '../utils/game-scene-utils';
 import { initKeys, movePaddle } from '../utils/game-controls';
 
 
@@ -30,12 +30,13 @@ class GameScene extends Scene {
         addBricks(this);
         addColliders(this);
         initKeys(this);
-
+        initTextDisplay(this);
     }
 
     update() {
         if (this.gameState.active) {
             movePaddle(this);
+            updateScoreDisplay(this);
         }
     }
 }

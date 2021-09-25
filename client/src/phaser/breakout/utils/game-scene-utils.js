@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 const MAX_VELOCITY = 600;
 const MAXLEVEL = 5;
 const TEXT_STYLE = {fontFamily: 'Game', fontSize: '12px'};
@@ -27,7 +25,7 @@ export function addBall(scene, ball) {
 
 export function addPlatform(scene, platform) {
     scene.gameState.platforms = scene.physics.add.staticGroup();
-    scene.gameState.platforms.create(scene.cameras.main.centerX, scene.cameras.main.displayHeight, platform).setScale(1, 0.01).refreshBody();
+    scene.gameState.platforms.create(scene.cameras.main.centerX, scene.cameras.main.displayHeight - 5, platform).setScale(1, 0.01).refreshBody();
 }
 
 export function addColliders(scene) {
@@ -69,7 +67,7 @@ export function initTextDisplay(scene) {
 
 export function updateScoreDisplay(scene) {
     scene.gameState.scoreDisplay.setText(`Score: ${scene.gameState.score}`);
-    scene.gameState.highScoreDisplay.setText(`Score: ${scene.gameState.highScore}`);
+    scene.gameState.highScoreDisplay.setText(`High Score: ${scene.gameState.highScore}`);
 }
 
 function displayGameOver(scene) {

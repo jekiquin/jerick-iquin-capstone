@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import GameScene from './scenes/GameScene';
-// import HomeScene from './scenes/HomeScene';
+import HomeScene from './scenes/HomeScene';
 
 
 export const gameConfig = {
@@ -18,8 +18,8 @@ export const gameConfig = {
         arcade: {
             gravity: {y: 0},
             enableBody: true,
-            debug: false
+            debug: true
         }
     },
-    scene: [GameScene]
+    scene: [HomeScene, GameScene]
 }

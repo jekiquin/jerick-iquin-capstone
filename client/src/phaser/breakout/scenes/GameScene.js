@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addPlayer, addBall, addPlatform, addBricks, addColliders } from '../utils/game-scene-utils';
+import { gameInit, addPlayer, addBall, addPlatform, addBricks, addColliders } from '../utils/game-scene-utils';
 import { initKeys, movePaddle } from '../utils/game-controls';
 
 
@@ -8,7 +8,9 @@ const BRICKTYPES = 7;
 class GameScene extends Scene {
     constructor() {
         super({key: 'GameScene'})
-        this.gameState = {}
+        this.gameState = {
+            highScore: 0,
+        }
     }
 
     preload() {
@@ -21,7 +23,7 @@ class GameScene extends Scene {
     }
 
     create() {
-        this.gameState.ballActive = false;
+        gameInit(this);
         addPlatform(this, 'platform');
         addPlayer(this, 'player');
         addBall(this, 'ball');
@@ -32,8 +34,9 @@ class GameScene extends Scene {
     }
 
     update() {
-        movePaddle(this);
-
+        if (this.gameState.active) {
+            movePaddle(this);
+        }
     }
 }
 

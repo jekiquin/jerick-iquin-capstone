@@ -1,5 +1,4 @@
 const PADDLE_ACC = 2000;
-const BASE_BALLSPEED = -300;
 
 export function initKeys(scene) {
     scene.gameState.cursors = scene.input.keyboard.createCursorKeys();
@@ -18,7 +17,7 @@ export function movePaddle(scene) {
 
     if (scene.gameState.cursors.space.isDown) {
         if (!scene.gameState.ballActive) {
-            scene.gameState.ball.setVelocityY(-BASE_BALLSPEED);
+            scene.gameState.ball.setVelocityY(scene.gameState.ballSpeed);
             scene.gameState.ballActive = true;
         }
     }

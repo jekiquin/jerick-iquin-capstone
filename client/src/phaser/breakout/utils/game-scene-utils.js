@@ -2,6 +2,14 @@ import Phaser from 'phaser';
 
 const MAX_VELOCITY = 600;
 
+export function gameInit(scene) {
+    scene.gameState.ballActive = false;
+    scene.gameState.score = 0;
+    scene.gameState.ballSpeed = 300;
+    scene.gameState.level = 1;
+    scene.gameState.active = true;
+}
+
 export function addPlayer(scene, player) {
     scene.gameState.player = scene.physics.add.sprite(scene.cameras.main.centerX, scene.cameras.main.displayHeight - 50, player);
     scene.gameState.player.setCollideWorldBounds(true);
@@ -18,7 +26,7 @@ export function addBall(scene, ball) {
 
 export function addPlatform(scene, platform) {
     scene.gameState.platforms = scene.physics.add.staticGroup();
-    scene.gameState.platforms.create(scene.cameras.main.centerX, 690, platform).setScale(1, 0.01).refreshBody();
+    scene.gameState.platforms.create(scene.cameras.main.centerX, scene.cameras.main.displayHeight, platform).setScale(1, 0.01).refreshBody();
 }
 
 export function addColliders(scene) {
@@ -29,7 +37,13 @@ export function addColliders(scene) {
 
     scene.physics.add.collider(scene.gameState.ball, scene.gameState.bricks, (ball, brick) => {
         brick.destroy();
+        scene.gameState.score += 1;
      });
+
+     scene.physics.add.collider(scene.gameState.ball, scene.gameState.platforms, () => {
+        scene.gameState.active = false;
+        scene.gameState.ball.destroy();
+     })
 }
 
 export function addBricks(scene) {

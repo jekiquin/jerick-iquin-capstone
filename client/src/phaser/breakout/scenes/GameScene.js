@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addPlayer } from '../utils/game-scene-utils';
+import { addPlayer, addBall, addColliders } from '../utils/game-scene-utils';
 import { initKeys, movePaddle } from '../utils/game-controls';
 
 
@@ -21,8 +21,11 @@ class GameScene extends Scene {
     }
 
     create() {
-        initKeys(this);
+        this.gameState.ballActive = false;
         addPlayer(this, 'player');
+        addBall(this, 'ball');
+        addColliders(this);
+        initKeys(this);
 
     }
 

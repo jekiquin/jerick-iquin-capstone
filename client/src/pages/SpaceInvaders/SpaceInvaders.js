@@ -1,7 +1,6 @@
 import { Component, createRef } from 'react';
 import { IonPhaser } from '@ion-phaser/react';
 import { gameConfig } from '../../phaser/space-invaders/phaser-game';
-import './SpaceInvaders.scss';
 
 
 class SpaceInvaders extends Component {

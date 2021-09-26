@@ -1,9 +1,10 @@
 import { Scene } from 'phaser';
-import { addBricks } from '../utils/game-scene-utils';
-import { genBrickDestroy } from '../utils/home-scene-utils';
+import { addBricks,addBall, addColliders } from '../utils/game-scene-utils';
+// import { genBrickDestroy } from '../utils/home-scene-utils';
 
 const BRICKTYPES = 7;
 const DELAYSTART = 1000;
+const DISPLAYDELAY = 500;
 
 class HomeScene extends Scene {
     constructor(){
@@ -16,6 +17,7 @@ class HomeScene extends Scene {
     preload() {
         this.load.image('logo', 'assets/images/breakoutlogo.png');
         this.load.image('platform', 'assets/images/platform.png');
+        this.load.image('ball', 'assets/sprites/breakoutball.png');
         for (let i=1; i<=BRICKTYPES; i++) {
             this.load.image(`brick${i}`, `assets/sprites/breakout${i}.png`);
         }
@@ -24,7 +26,15 @@ class HomeScene extends Scene {
     create() {
         this.add.image(this.cameras.main.centerX, 120, 'logo').setScale(.8, 1);
         addBricks(this);
-        genBrickDestroy(this);
+        addBall(this,'ball');
+        addColliders(this);
+        this.gameState.ball.setVelocity(
+            1000+Math.random()*600,
+            1000+Math.random()*600
+        )
+
+        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Press anywhere to play!',{fontFamily: 'Game'}).setOrigin(0.5, 0);
+
         this.input.on('pointerup', () => {
             this.scene.start('GameScene');
         })
@@ -41,9 +51,7 @@ class HomeScene extends Scene {
             return;
         }
 
-        if(this.gameState.brickDestroy?.paused) {
-            this.gameState.brickDestroy.paused = false 
-        }
+        
         
     }
 }

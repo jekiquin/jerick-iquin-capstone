@@ -22,14 +22,13 @@ class Breakout extends Component {
     }
 
     componentWillUnmount() {
-        console.log(this.state.gameData.highScore);
+        // console.log(this.state.gameData.highScore);
         // axios post here maybe?
         this.gameRef.current.destroy();
     }
 
     render() {
-        const { gameInstance, gameData } = this.state;
-        console.log(gameData);
+        const { gameInstance } = this.state;
         return(
             <div id="phaser-game">
                 <IonPhaser ref={this.gameRef} game={gameInstance}/>

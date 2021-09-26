@@ -94,7 +94,7 @@ function interactiveButtons(scene, buttons) {
             if (button._text.toUpperCase() === 'YES') {
                 scene.scene.restart();
             } else {
-                console.log('go to homescene')
+                scene.scene.start('HomeScene');
             }
         })
     })

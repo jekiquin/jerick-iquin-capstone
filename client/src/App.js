@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route path='/home' component={HomePage} />
-        <Route path='/:gameId' component={GamePage} />
+        <Route path='/games/:gameId' component={GamePage} />
         <Redirect from='/' to='/home' />
       </Switch>
     </div>

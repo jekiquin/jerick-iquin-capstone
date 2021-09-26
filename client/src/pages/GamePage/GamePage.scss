@@ -1,0 +1,12 @@
+
+.gamepage {
+    &__link {
+        display: inline;
+    }
+    
+    &__back-button {
+        width: 3rem;
+        height: auto;
+        object-fit: cover;
+    }
+}

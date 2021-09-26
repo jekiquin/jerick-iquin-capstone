@@ -21,9 +21,11 @@ class HomeScene extends Scene {
         for (let i=1; i<=BRICKTYPES; i++) {
             this.load.image(`brick${i}`, `assets/sprites/breakout${i}.png`);
         }
+        this.load.image('bg', 'assets/images/breakoutbg.jpg');
     }
 
     create() {
+        this.add.image(0,0, 'bg').setOrigin(0,0)
         this.add.image(this.cameras.main.centerX, 120, 'logo').setScale(.8, 1);
         addBricks(this);
         addBall(this,'ball');

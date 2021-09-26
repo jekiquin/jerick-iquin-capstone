@@ -20,9 +20,11 @@ class GameScene extends Scene {
         for (let i=1; i<=BRICKTYPES; i++) {
             this.load.image(`brick${i}`, `assets/sprites/breakout${i}.png`);
         }
+        this.load.image('bg', 'assets/images/breakoutbg.jpg');
     }
 
     create() {
+        this.add.image(0,0, 'bg').setOrigin(0,0);
         gameInit(this);
         addPlatform(this, 'platform');
         addPlayer(this, 'player');

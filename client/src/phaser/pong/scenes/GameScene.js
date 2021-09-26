@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { addPaddles, addPlatforms, addBall, addColliders, initTextDisplay, initScores, ballOut } from '../utils/game-scene-utils';
 import { initKeys, gameControls } from '../utils/game-controls';
+import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 class GameScene extends Scene {
     constructor(){
@@ -9,9 +10,9 @@ class GameScene extends Scene {
     }
 
     preload() {
-        this.load.image('bg', 'assets/images/paddleboardbg.png');
-        this.load.image('paddle', 'assets/images/paddle.png');
-        this.load.image('platform', 'assets/images/platform.png');
+        this.load.image('bg', LOCAL_HOST + '/assets/images/paddleboardbg.png');
+        this.load.image('paddle', LOCAL_HOST + '/assets/images/paddle.png');
+        this.load.image('platform', LOCAL_HOST + '/assets/images/platform.png');
     }
 
     create() {

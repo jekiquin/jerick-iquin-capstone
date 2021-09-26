@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
-import { gameControls } from '../utils/game-controls'
+import { gameControls } from '../utils/game-controls';
+import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 // width: 540,
 // height: 720
@@ -21,18 +22,18 @@ class GameScene extends Scene {
 
 
     preload() {
-        this.load.image('ship', 'assets/sprites/ship.ico');
-        this.load.image('playerbullet', 'assets/sprites/playerbullet.png');
-        this.load.image('boss', 'assets/sprites/boss.png');
-        this.load.image('bug1', 'assets/sprites/bug1.png');
-        this.load.image('bug2', 'assets/sprites/bug2.png');
-        this.load.image('bug3', 'assets/sprites/bug3.png');
-        this.load.image('bug4', 'assets/sprites/bug4.png');
-        this.load.image('bug5', 'assets/sprites/bug5.png');
-        this.load.image('boss', 'assets/sprites/boss.png');
-        this.load.image('enemybullet', 'assets/sprites/enemybullet.png');
-        this.load.image('platform', 'assets/images/platform.png');
-        this.load.image('bg', 'assets/images/spaceinvadersbg.jpg');
+        this.load.image('ship', LOCAL_HOST + '/assets/sprites/ship.ico');
+        this.load.image('playerbullet', LOCAL_HOST + '/assets/sprites/playerbullet.png');
+        this.load.image('boss', LOCAL_HOST + '/assets/sprites/boss.png');
+        this.load.image('bug1', LOCAL_HOST + '/assets/sprites/bug1.png');
+        this.load.image('bug2', LOCAL_HOST + '/assets/sprites/bug2.png');
+        this.load.image('bug3', LOCAL_HOST + '/assets/sprites/bug3.png');
+        this.load.image('bug4', LOCAL_HOST + '/assets/sprites/bug4.png');
+        this.load.image('bug5', LOCAL_HOST + '/assets/sprites/bug5.png');
+        this.load.image('boss', LOCAL_HOST + '/assets/sprites/boss.png');
+        this.load.image('enemybullet', LOCAL_HOST + '/assets/sprites/enemybullet.png');
+        this.load.image('platform', LOCAL_HOST + '/assets/images/platform.png');
+        this.load.image('bg', LOCAL_HOST + '/assets/images/spaceinvadersbg.jpg');
     }
 
     create() {

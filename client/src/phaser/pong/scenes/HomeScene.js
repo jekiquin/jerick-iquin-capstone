@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { addStaticWalls, addBall, addColliders, addLogo, updateDisplay } from '../utils/home-scene-utils';
+import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 class HomeScene extends Scene {
     constructor() {
@@ -8,10 +9,10 @@ class HomeScene extends Scene {
     }
 
     preload() {
-        this.load.image('logo', 'assets/images/ponglogo.png');
-        this.load.image('ball', 'assets/images/paddle.png');
-        this.load.image('platform', 'assets/images/platform.png');
-        this.load.image('platform-vertical', 'assets/images/platformVertical.png');
+        this.load.image('logo', LOCAL_HOST + '/assets/images/ponglogo.png');
+        this.load.image('ball', LOCAL_HOST + '/assets/images/paddle.png');
+        this.load.image('platform', LOCAL_HOST + '/assets/images/platform.png');
+        this.load.image('platform-vertical', LOCAL_HOST + '/assets/images/platformVertical.png');
     }
 
     create() {

@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 const PULSATE_TIMING = 500;
 const STOPPED_STATE = 1.25;
@@ -14,10 +15,10 @@ class HomeScene extends Scene {
     }
 
     preload() {
-        this.load.image('bg', 'assets/images/spaceinvadersbg.jpg');
-        this.load.image('logo', 'assets/images/spaceinvaderslogo.png');
-        this.load.image('button', 'assets/images/spaceinvadersbutton.png');
-        this.load.image('platform', 'assets/images/platform.png');
+        this.load.image('bg', LOCAL_HOST + '/assets/images/spaceinvadersbg.jpg');
+        this.load.image('logo', LOCAL_HOST + '/assets/images/spaceinvaderslogo.png');
+        this.load.image('button', LOCAL_HOST + '/assets/images/spaceinvadersbutton.png');
+        this.load.image('platform', LOCAL_HOST + '/assets/images/platform.png');
     }
 
     create() {

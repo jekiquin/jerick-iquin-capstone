@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import './HomePage.scss';
 import arcade from '../../assets/images/arcade.png';
 
@@ -17,11 +17,11 @@ class HomePage extends Component{
                         
                     </div>
                 </div>
-                {/* <ul className='game-library'>
+                <ul className='game-library'>
                     <li className='game'><Link to='/space-invaders'>Space Invaders</Link></li>
                     <li className='game'><Link to='/pong'>Pong</Link></li>
                     <li className='game'><Link to='/breakout'>Breakout</Link></li>
-                </ul> */}
+                </ul>
             </main>
         )
     }

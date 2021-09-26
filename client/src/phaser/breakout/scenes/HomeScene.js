@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 import { addBricks,addBall, addColliders } from '../utils/game-scene-utils';
-// import { genBrickDestroy } from '../utils/home-scene-utils';
+import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 const BRICKTYPES = 7;
 const DELAYSTART = 1000;
@@ -14,13 +14,14 @@ class HomeScene extends Scene {
     }
 
     preload() {
-        this.load.image('logo', 'assets/images/breakoutlogo.png');
-        this.load.image('platform', 'assets/images/platform.png');
-        this.load.image('ball', 'assets/sprites/breakoutball.png');
+
+        this.load.image('logo', LOCAL_HOST + '/assets/images/breakoutlogo.png');
+        this.load.image('platform', LOCAL_HOST + '/assets/images/platform.png');
+        this.load.image('ball', LOCAL_HOST + '/assets/sprites/breakoutball.png');
         for (let i=1; i<=BRICKTYPES; i++) {
-            this.load.image(`brick${i}`, `assets/sprites/breakout${i}.png`);
+            this.load.image(`brick${i}`, `${LOCAL_HOST}/assets/sprites/breakout${i}.png`);
         }
-        this.load.image('bg', 'assets/images/breakoutbg.jpg');
+        this.load.image('bg', LOCAL_HOST + '/assets/images/breakoutbg.jpg');
     }
 
     create() {

@@ -9,39 +9,50 @@ import loading from '../../assets/images/loading.png'
 class HomePage extends Component{
     state = {
         redirect: false,
-        games: null
+        games: null,
+        gameIndex: null,
     }
 
     componentDidMount() {
         gameFetcher.get('/get-logos')
             .then(res => {
                 this.setState({
-                    games: res.data
+                    games: res.data,
+                    gameIndex: 0
                 })
             })
     }
 
-    showImages = () => {
+    showImage = (idx) => {
         const { games } = this.state;
-        return Object.values(games).map(game => (
-            <img className='arcade__img' src={`${LOCAL_HOST}/assets/images/${game}`} alt={game}/>
-        ))
+        const gamesList = Object.entries(games);
+        return (
+            <img 
+                className='arcade__img' 
+                id={gamesList[idx][0]} 
+                src={`${LOCAL_HOST}/assets/images/${gamesList[idx][1]}`} 
+                alt={gamesList[idx][0]}
+            />
+        )
     }
 
     render() {
-        const { games } = this.state;
+        const { games, gameIndex } = this.state;
 
         return(
             <main>
                 <div className='arcade'>
                     <div className='arcade__imgs'>
                         {!games && <img className='arcade__img' src={loading} alt='page loading' />}
-                        {games && this.showImages()}
+                        {games && this.showImage(gameIndex)}
+                    </div>
+                    <div className='arcade__buttons'>
+                        <div className='arcade__button arcade__button--start'></div>
+                        <div className='arcade__button'></div>
+                        <div className='arcade__button'></div>
                     </div>
                     <img className='arcade__frame' src={arcade} alt='arcade' />
-                    <div className='arcade__buttons'>
-
-                    </div>
+     
                 </div>
                 <ul className='game-library'>
                     <li className='game'><Link to='/games/spaceinvaders'>Space Invaders</Link></li>

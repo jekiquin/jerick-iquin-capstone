@@ -12,7 +12,6 @@ class GamePage extends Component {
         const { gameId } = this.props.match.params;
         import(`../../phaser/${gameId}/phaser-game.js`)
             .then(response => {
-                console.log(response.gameConfig);
                 this.setState({gameInstance: response.gameConfig})
                 // setTimeout(() => {
                 //     const reactProps = Object.keys(this.gameRef.current).find(key => key.includes('reactProps'));

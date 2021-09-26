@@ -4,7 +4,6 @@ import { addBricks,addBall, addColliders } from '../utils/game-scene-utils';
 
 const BRICKTYPES = 7;
 const DELAYSTART = 1000;
-const DISPLAYDELAY = 500;
 
 class HomeScene extends Scene {
     constructor(){

@@ -1,12 +1,26 @@
 
 .gamepage {
+    background-image: url('../../assets/images/gamepagebg.webp');
+    background-size: cover;
+    height: 100vh;
+
+    display: flex;
     &__link {
         display: inline;
     }
-    
+
     &__back-button {
         width: 3rem;
         height: auto;
         object-fit: cover;
+    }
+
+    #phaser-game{
+        flex-grow: 1;
+    }
+
+    canvas {
+        border-radius: 10px;
+        border: 20px inset black;
     }
 }

@@ -36,14 +36,14 @@ class GamePage extends Component {
     render() {
         const { gameInstance } = this.state;
         return(
-            <>
-            <Link className='gamepage__link' to='/'>
-                <img className='gamepage__back-button' src={backButton} alt='back button' />
-            </Link>
-            <div id="phaser-game">
-                {gameInstance && <IonPhaser ref={this.gameRef} game={gameInstance}/>}
+            <div className='gamepage'>
+                <Link className='gamepage__link' to='/'>
+                    <img className='gamepage__back-button' src={backButton} alt='back button' />
+                </Link>
+                <div id="phaser-game">
+                    {gameInstance && <IonPhaser ref={this.gameRef} game={gameInstance}/>}
+                </div>
             </div>
-            </>
         )
     }
 }

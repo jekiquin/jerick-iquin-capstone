@@ -17,29 +17,57 @@ class HomePage extends Component{
         gameFetcher.get('/get-logos')
             .then(res => {
                 this.setState({
-                    games: res.data,
+                    games: Object.entries(res.data),
                     gameIndex: 0
                 })
             })
     }
 
+    handleNextImage = () => {
+        const { games, gameIndex } = this.state;
+        if(gameIndex + 1 === games.length) {
+            return
+        }
+        this.setState({
+            gameIndex: gameIndex + 1
+        })
+    }
+
+    handlePreviousImage = () => {
+        const { gameIndex } = this.state;
+        if(gameIndex === 0) {
+            return
+        }
+        this.setState({
+            gameIndex: gameIndex - 1
+        })
+    }
+
+    handleStartGame = () => {
+        const { game, gameIndex } = this.state;
+        this.setState({
+            redirect: true
+        })
+    }
+
     showImage = (idx) => {
         const { games } = this.state;
-        const gamesList = Object.entries(games);
         return (
             <img 
                 className='arcade__img' 
-                id={gamesList[idx][0]} 
-                src={`${LOCAL_HOST}/assets/images/${gamesList[idx][1]}`} 
-                alt={gamesList[idx][0]}
+                id={games[idx][0]} 
+                src={`${LOCAL_HOST}/assets/images/${games[idx][1]}`} 
+                alt={games[idx][0]}
             />
         )
     }
 
     render() {
-        const { games, gameIndex } = this.state;
+        const { games, gameIndex, redirect } = this.state;
 
-        return(
+        return redirect 
+        ? <Redirect to={`/games/${games[gameIndex][0]}`} />
+        : (
             <main>
                 <div className='arcade'>
                     <div className='arcade__imgs'>
@@ -47,18 +75,13 @@ class HomePage extends Component{
                         {games && this.showImage(gameIndex)}
                     </div>
                     <div className='arcade__buttons'>
-                        <div className='arcade__button arcade__button--start'></div>
-                        <div className='arcade__button'></div>
-                        <div className='arcade__button'></div>
+                        <div className='arcade__button arcade__button--start' onClick={this.handleStartGame}></div>
+                        <div className='arcade__button' onClick={this.handlePreviousImage}></div>
+                        <div className='arcade__button' onClick={this.handleNextImage}></div>
                     </div>
                     <img className='arcade__frame' src={arcade} alt='arcade' />
      
                 </div>
-                <ul className='game-library'>
-                    <li className='game'><Link to='/games/spaceinvaders'>Space Invaders</Link></li>
-                    <li className='game'><Link to='/games/pong'>Pong</Link></li>
-                    <li className='game'><Link to='/games/breakout'>Breakout</Link></li>
-                </ul>
             </main>
         )
     }

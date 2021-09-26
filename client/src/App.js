@@ -6,8 +6,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path='/' exact component={HomePage} />
-        <Route path='/:gameId' component={GamePage} />  
+        <Route path='/home' component={HomePage} />
+        <Route path='/:gameId' component={GamePage} />
+        <Redirect from='/' to='/home' />
       </Switch>
     </div>
   );

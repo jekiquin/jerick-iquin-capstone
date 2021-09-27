@@ -12,6 +12,7 @@ class GamePage extends Component {
     gameRef = createRef();
 
     componentDidMount() {
+        console.log(this.props.history);
         const { gameId } = this.props.match.params;
         import(`../../phaser/${gameId}/phaser-game.js`)
             .then(response => {
@@ -37,7 +38,7 @@ class GamePage extends Component {
         const { gameInstance } = this.state;
         return(
             <div className='gamepage'>
-                <Link className='gamepage__link' to='/'>
+                <Link to='/' >
                     <img className='gamepage__back-button' src={backButton} alt='back button' />
                 </Link>
                 <div id="phaser-game">

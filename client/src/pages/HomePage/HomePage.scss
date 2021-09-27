@@ -9,7 +9,8 @@
     &__frame {
         display: block;
         margin: 0 auto;
-        height: 180%;
+        height: 84rem;
+        // width: 42.5rem;
         position: relative;
         z-index: 2;
     }
@@ -19,9 +20,9 @@
         height: 18.75rem;
         position:absolute;
         background-color: black;
-        top: calc(50% - calc(10rem/2));
+        top: 18.75rem;
         left: calc(50% - calc(24rem/2));
-        overflow-x: scroll;
+        overflow: hidden;
         display: flex;
         align-items: center;
         // z-index: 3;
@@ -37,28 +38,30 @@
     }
 
     &__buttons {
-        width: 30rem;
+        $width: 30rem;
+        // width: 30rem;
+        width: $width;
         height: 6rem;
         position: absolute;
         z-index: 3;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        bottom: calc(3rem);
-        left: calc(50% - calc(29rem/2))
+        top: 37.5rem;
+        left: calc(50% - calc($width/2));
     }
 
     &__button {
         height: 2.3rem;
         width: 2.3rem;
         border-radius: 50%;
-        margin-left: 1.7rem;
+        margin-left: 1.4rem;
         margin-right: 2.3rem;
         flex-shrink: 0;
         cursor: pointer;
 
         &--start {
-            margin-right: 0.7rem;
+            margin-right: 0.8rem;
             align-self: flex-start;
         }
     }

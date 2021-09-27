@@ -6,7 +6,7 @@ import HomeScene from './scenes/HomeScene';
 export const gameConfig = {
     type: Phaser.AUTO,
     scale: {
-        mode: Phaser.Scale.FIT,
+        // mode: Phaser.Scale.FIT,
         parent: 'phaser-game',
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 540,

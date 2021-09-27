@@ -1,7 +1,7 @@
 import { Component, createRef } from 'react';
 import { IonPhaser } from '@ion-phaser/react';
 import { Link } from 'react-router-dom';
-import backButton from '../../assets/images/backbutton.jpg';
+import backButton from '../../assets/images/backbutton.png';
 import './GamePage.scss'
 
 class GamePage extends Component {

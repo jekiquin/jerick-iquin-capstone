@@ -6,9 +6,25 @@ const getData = (_req, res) => {
     try {
         const data = readFile(DATA_PATH);
         if(!data) {
-            return res.status(204).json({});
+            return res.status(204).json({message: 'No data available'});
         }
         res.status(200).json(data);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal error!'});
+    }
+}
+
+const getGameData = (req, res) => {
+    const {gameId} = req.params
+    console.log(gameId)
+    try {
+        const data = readFile(DATA_PATH);
+        if(!data || !data[gameId]) {
+            return res.status(204).json({message: 'No data available'});
+        }
+        res.status(200).json(data[gameId]);
     }
     catch (error) {
         console.log(error);
@@ -43,5 +59,6 @@ const postData = (req, res) => {
 
 module.exports = {
     getData,
-    postData
+    postData,
+    getGameData
 }

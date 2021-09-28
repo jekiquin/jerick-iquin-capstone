@@ -18,7 +18,6 @@ const getData = (_req, res) => {
 
 const getGameData = (req, res) => {
     const {gameId} = req.params
-    console.log(gameId)
     try {
         const data = readFile(DATA_PATH);
         if(!data || !data[gameId]) {

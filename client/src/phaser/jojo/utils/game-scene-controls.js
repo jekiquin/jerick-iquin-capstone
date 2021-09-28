@@ -4,7 +4,6 @@ export function genControls(scene) {
     }
     
     if (scene.gameState.cursors.right.isDown) {
-        console.log('run');
         scene.gameState.player.flipX = true;
         scene.gameState.player.body.touching.down && scene.gameState.player.anims.play('run', true);
         scene.gameState.player.setVelocityX(250);

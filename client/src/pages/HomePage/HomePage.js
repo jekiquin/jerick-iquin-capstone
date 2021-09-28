@@ -1,5 +1,6 @@
 import { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import uniqid from 'uniqid';
 import { gameFetcher, LOCAL_HOST } from '../../utils/axiossetup';
 import './HomePage.scss';
 import arcade from '../../assets/images/arcade.png';
@@ -11,7 +12,8 @@ class HomePage extends Component{
         redirect: false,
         games: null,
         gameIndex: null,
-        highScores: null
+        highScores: null,
+        user: 'Gamer'
     }
 
     componentDidMount() {
@@ -19,13 +21,12 @@ class HomePage extends Component{
         gameFetcher.get('/get-logos')
             .then(res => {
                 games = Object.entries(res.data);
-                return gameFetcher.get(`/get-highscores/${games[gameIndex][0]}`);
+                return gameFetcher.get(`/get-highscores`);
             }).then(res => {
-                const highScores = res.data || []
                 this.setState({
                     games,
                     gameIndex,
-                    highScores
+                    highScores: res.data
                 })
             }).catch(error => {
                 console.log(error)
@@ -70,17 +71,43 @@ class HomePage extends Component{
         )
     }
 
-    render() {
-        const { games, gameIndex, redirect, highScores } = this.state;
+    handleChange = e => {
+        this.setState({
+            user: e.target.value.trim()
+        })
+    }
 
+    showHighScores = (highScores) => (
+        <ol className='arcade__scores'>
+            {highScores?.map(data => (
+                <li key={uniqid()} className='arcade__score'>
+                    {data.name.padEnd(6,'').toUpperCase()} - {data.score}
+                </li>
+            ))}
+        </ol>
+    )
+
+    render() {
+        const { games, gameIndex, redirect, highScores, user } = this.state;
+        const gameHighScore = games && highScores[games[gameIndex][0]];
         return redirect 
         ? <Redirect to={{
                 pathname:`/games/${games[gameIndex][0]}`,
-                state: {highScores}
+                state: {user, gameHighScore}
             }} />
         : (
             <main>
                 <div className='arcade'>
+                    <div className='arcade__data'>
+                        <input type='text' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
+                        { gameHighScore && 
+                            <>
+                                <h2>High Scores:</h2>
+                                {this.showHighScores(gameHighScore)}
+                            </>
+                        }
+
+                    </div>
                     <div className='arcade__imgs'>
                         {!games && <img className='arcade__img' src={loading} alt='page loading' />}
                         {games && this.showImage(gameIndex)}

@@ -6,6 +6,12 @@
     background-size: 100% 100%;
     position: relative;
 
+    &__data {
+        position: absolute;
+        color: gray;
+        font-size: .8rem;
+    }
+
     &__frame {
         display: block;
         margin: 0 auto;

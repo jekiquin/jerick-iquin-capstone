@@ -7,9 +7,9 @@ require('dotenv').config();
 
 router.get('/get-logos', getLogos);
 
+router.get('/get-highscores/:gameId', getGameData);
 router.use('/get-highscores', postHandle);
 router.get('/get-highscores', getData);
-router.get('/get-highscores/:gameId', getGameData);
 router.post('/get-highscores', postData)
 
 module.exports = router;

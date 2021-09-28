@@ -1,6 +1,10 @@
 const VALIDKEYS = ['game', 'name', 'score'];
 
 const postHandle = (req, res, next) => {
+    if(req.method !== 'POST') {
+        next();
+    }
+
     if(req.method === 'POST' && req.headers['content-type'] !== 'application/json') {
         return res.status(400).json({message: 'Content-type header should be set to application/json'})
     }

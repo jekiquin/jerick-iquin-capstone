@@ -1,0 +1,25 @@
+@use '../../partial/placeholders' as *;
+
+.arcade {
+    &__invisiblecheck {
+        display: none;
+
+        &:checked + .arcade__data {
+            transform: translateX(0);
+        }
+    }
+
+    &__close {
+        @extend %close-button;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    &__user {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        height: 2rem;
+        padding: 0.5rem;
+    }
+}

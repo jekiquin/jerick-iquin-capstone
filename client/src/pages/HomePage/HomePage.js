@@ -1,12 +1,13 @@
 import { Component, createRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import uniqid from 'uniqid';
+
 import { gameFetcher, LOCAL_HOST } from '../../utils/axiossetup';
+import LeaderBoard from '../../components/LeaderBoard/LeaderBoard';
 import './HomePage.scss';
 import arcade from '../../assets/images/arcade.png';
 import loading from '../../assets/images/loading.png';
 import leaderButton from '../../assets/images/leaderboard.png';
-import backButton from '../../assets/images/backbutton.png';
+
 
 
 class HomePage extends Component{
@@ -84,16 +85,6 @@ class HomePage extends Component{
         })
     }
 
-    showHighScores = (highScores) => (
-        <ol className='arcade__scores'>
-            {highScores?.slice(0, 10).map(data => (
-                <li key={uniqid()} className='arcade__score'>
-                    {data.name.padEnd(15,'-').toUpperCase()}{`${data.score}`.padStart(3,'0')}
-                </li>
-            ))}
-        </ol>
-    )
-
     render() {
         const { games, gameIndex, redirect, highScores, user } = this.state;
         const gameHighScore = games && highScores[games[gameIndex][0]];
@@ -107,18 +98,7 @@ class HomePage extends Component{
                 <div className='arcade'>
                     <label htmlFor='invisiblecheck'><img className='arcade__leader' src={leaderButton} alt='leader button' /></label>
                     <input className='arcade__invisiblecheck' type='checkbox' name='invisiblecheck' id='invisiblecheck' />
-                    <div className='arcade__data'>
-                        <label htmlFor='invisiblecheck'><img className='arcade__close' src={backButton} alt='close button' /></label>
-                        <label htmlFor='gamer'>Enter player name:</label>
-                        <input ref={this.userInput} className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='10'/>
-                        { gameHighScore && 
-                            <>
-                                <h2>High Scores:</h2>
-                                {this.showHighScores(gameHighScore)}
-                            </>
-                        }
-
-                    </div>
+                    <LeaderBoard gameHighScore={gameHighScore} user={user} userInput={this.userInput} handleChange={this.handleChange} />
                     <div className='arcade__imgs'>
                         {!games && <img className='arcade__img' src={loading} alt='page loading' />}
                         {games && this.showImage(gameIndex)}

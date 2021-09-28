@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addStaticWalls, addBall, addColliders, addLogo, updateDisplay } from '../utils/home-scene-utils';
+import { addStaticWalls, addBall, addColliders, addLogo, updateDisplay, pressToPlay } from '../utils/home-scene-utils';
 import { LOCAL_HOST } from '../../../utils/axiossetup';
 
 class HomeScene extends Scene {
@@ -20,7 +20,7 @@ class HomeScene extends Scene {
         addStaticWalls(this, ['platform', 'platform-vertical']);
         addBall(this);
         addColliders(this);
-
+        pressToPlay(this);
     }
 
     update(gameTime) {

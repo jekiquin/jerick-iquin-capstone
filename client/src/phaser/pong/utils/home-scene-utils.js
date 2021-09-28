@@ -41,14 +41,13 @@ export function updateDisplay(scene, gameTime) {
 
 }
 
-function pressToPlay(scene) {
+export function pressToPlay(scene) {
     scene.gameState.pressToPlay = scene.add.text(scene.cameras.main.centerX - 80, 3*scene.cameras.main.centerY/2, 'Press here to play').setOrigin(0, 0);
-    scene.gameState.pressToPlay.setInteractive();
-    scene.gameState.updatePressToPlay = initPresstoPlay(scene);
-
+    console.log(scene.gameState.pressToPlay)
     scene.input.on('pointerup', ()=> {
         scene.scene.start('GameScene');
     })
+    scene.gameState.updatePressToPlay = initPresstoPlay(scene);
 }
 
 function initPresstoPlay(scene) {

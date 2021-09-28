@@ -6,6 +6,7 @@ import './HomePage.scss';
 import arcade from '../../assets/images/arcade.png';
 import loading from '../../assets/images/loading.png';
 import leaderButton from '../../assets/images/leaderboard.png';
+import backButton from '../../assets/images/backbutton.png';
 
 
 class HomePage extends Component{
@@ -101,10 +102,12 @@ class HomePage extends Component{
         : (
             <main>
                 <div className='arcade'>
+                    <label htmlFor='invisiblecheck'><img className='arcade__leader' src={leaderButton} alt='leader button' /></label>
+                    <input className='arcade__invisiblecheck' type='checkbox' name='invisiblecheck' id='invisiblecheck' />
                     <div className='arcade__data'>
+                        <label htmlFor='invisiblecheck'><img className='arcade__close' src={backButton} alt='close button' /></label>
                         <label htmlFor='gamer'>Enter player name:</label>
-                        <input type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
-                        <img className='arcade__leader' src={leaderButton} alt='leader button' />
+                        <input className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
                         { gameHighScore && 
                             <>
                                 <h2>High Scores:</h2>

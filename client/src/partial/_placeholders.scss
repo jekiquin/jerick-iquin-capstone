@@ -7,3 +7,8 @@
         transform: scale(1.2);
     }
 }
+
+%close-button {
+    @extend %main-button;
+    width: 2rem;
+}

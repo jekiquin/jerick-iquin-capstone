@@ -1,13 +1,10 @@
 import { Component, createRef } from 'react';
 import { Redirect } from 'react-router-dom';
-
-import { gameFetcher, LOCAL_HOST } from '../../utils/axiossetup';
+import { gameFetcher } from '../../utils/axiossetup';
 import LeaderBoard from '../../components/LeaderBoard/LeaderBoard';
+import ArcadeFrame from '../../components/ArcadeFrame/ArcadeFrame';
 import './HomePage.scss';
-import arcade from '../../assets/images/arcade.png';
-import loading from '../../assets/images/loading.png';
 import leaderButton from '../../assets/images/leaderboard.png';
-
 
 
 class HomePage extends Component{
@@ -65,18 +62,6 @@ class HomePage extends Component{
         })
     }
 
-    showImage = (idx) => {
-        const { games } = this.state;
-        return (
-            <img 
-                className='arcade__img' 
-                id={games[idx][0]} 
-                src={`${LOCAL_HOST}/assets/images/${games[idx][1]}`} 
-                alt={games[idx][0]}
-            />
-        )
-    }
-
     handleChange = () => {
         const input = this.userInput.current.value
         sessionStorage.setItem('user', input.trim())
@@ -94,24 +79,24 @@ class HomePage extends Component{
                 state: {user, gameHighScore}
             }} />
         : (
-            <main>
-                <div className='arcade'>
+                <main className='arcade'>
                     <label htmlFor='invisiblecheck'><img className='arcade__leader' src={leaderButton} alt='leader button' /></label>
                     <input className='arcade__invisiblecheck' type='checkbox' name='invisiblecheck' id='invisiblecheck' />
-                    <LeaderBoard gameHighScore={gameHighScore} user={user} userInput={this.userInput} handleChange={this.handleChange} />
-                    <div className='arcade__imgs'>
-                        {!games && <img className='arcade__img' src={loading} alt='page loading' />}
-                        {games && this.showImage(gameIndex)}
-                    </div>
-                    <div className='arcade__buttons'>
-                        <div className='arcade__button arcade__button--start' onClick={this.handleStartGame}></div>
-                        <div className='arcade__button' onClick={this.handlePreviousImage}></div>
-                        <div className='arcade__button' onClick={this.handleNextImage}></div>
-                    </div>
-                    <img className='arcade__frame' src={arcade} alt='arcade' />
+                    <LeaderBoard 
+                        gameHighScore={gameHighScore} 
+                        user={user} 
+                        userInput={this.userInput} 
+                        handleChange={this.handleChange} 
+                    />
+                    <ArcadeFrame 
+                        games={games} 
+                        gameIndex={gameIndex}
+                        handleStartGame={this.handleStartGame}
+                        handlePreviousImage={this.handlePreviousImage} 
+                        handleNextImage={this.handleNextImage}
+                    />
      
-                </div>
-            </main>
+                </main>
         )
     }
 

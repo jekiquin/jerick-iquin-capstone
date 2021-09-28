@@ -83,9 +83,9 @@ class HomePage extends Component{
 
     showHighScores = (highScores) => (
         <ol className='arcade__scores'>
-            {highScores?.map(data => (
+            {highScores?.slice(0, 10).map(data => (
                 <li key={uniqid()} className='arcade__score'>
-                    {data.name.padEnd(15,'-').toUpperCase()}{data.score}
+                    {data.name.padEnd(15,'-').toUpperCase()}{`${data.score}`.padStart(3,'0')}
                 </li>
             ))}
         </ol>
@@ -107,7 +107,7 @@ class HomePage extends Component{
                     <div className='arcade__data'>
                         <label htmlFor='invisiblecheck'><img className='arcade__close' src={backButton} alt='close button' /></label>
                         <label htmlFor='gamer'>Enter player name:</label>
-                        <input className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
+                        <input className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='10'/>
                         { gameHighScore && 
                             <>
                                 <h2>High Scores:</h2>

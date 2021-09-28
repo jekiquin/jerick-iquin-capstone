@@ -9,7 +9,7 @@ PORT=process.env.PORT || 8000;
 app.use(cors());
 app.use(express.static('public'));
 
-app.use('/', dataRouter)
+app.use('/', dataRouter);
 
 app.listen(PORT, () => {
     console.log(`Listening at port ${PORT}`);

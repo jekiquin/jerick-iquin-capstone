@@ -7,6 +7,7 @@ import './GamePage.scss'
 class GamePage extends Component {
     state = {
         gameInstance: null,
+        topScore: 0
     }
 
     gameRef = createRef();
@@ -16,15 +17,15 @@ class GamePage extends Component {
         const { gameId } = this.props.match.params;
         import(`../../phaser/${gameId}/phaser-game.js`)
             .then(response => {
-                this.setState({gameInstance: response.gameConfig})
-                // setTimeout(() => {
-                //     const reactProps = Object.keys(this.gameRef.current).find(key => key.includes('reactProps'));
-                //     const game = this.gameRef.current[reactProps].game;
-                //     // console.log(game.instance.scene.keys.GameScene.gameState)
-                //     // axios post here maybe?
-                //     // game.instance.scene.keys.GameScene.gameState.highScore = 300;
+                this.setState({gameInstance: response.gameConfig});
+                const topScore = this.props.location.state.highScores[0].score;
+                console.log(topScore);
+                setTimeout(() => {
+                    const reactProps = Object.keys(this.gameRef.current).find(key => key.includes('reactProps'));
+                    const game = this.gameRef.current[reactProps].game;
+                    game.instance.scene.keys.GameScene.gameState.highScore = topScore;
             
-                // }, 500)
+                }, 500)
             });
     }
 

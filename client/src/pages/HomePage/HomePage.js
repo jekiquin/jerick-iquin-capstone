@@ -11,15 +11,24 @@ class HomePage extends Component{
         redirect: false,
         games: null,
         gameIndex: null,
+        highScores: null
     }
 
     componentDidMount() {
+        let games, gameIndex = 0;
         gameFetcher.get('/get-logos')
             .then(res => {
+                games = Object.entries(res.data);
+                return gameFetcher.get(`/get-highscores/${games[gameIndex][0]}`);
+            }).then(res => {
+                const highScores = res.data || []
                 this.setState({
-                    games: Object.entries(res.data),
-                    gameIndex: 0
+                    games,
+                    gameIndex,
+                    highScores
                 })
+            }).catch(error => {
+                console.log(error)
             })
     }
 
@@ -44,7 +53,6 @@ class HomePage extends Component{
     }
 
     handleStartGame = () => {
-        const { game, gameIndex } = this.state;
         this.setState({
             redirect: true
         })
@@ -63,10 +71,13 @@ class HomePage extends Component{
     }
 
     render() {
-        const { games, gameIndex, redirect } = this.state;
+        const { games, gameIndex, redirect, highScores } = this.state;
 
         return redirect 
-        ? <Redirect to={`/games/${games[gameIndex][0]}`} />
+        ? <Redirect to={{
+                pathname:`/games/${games[gameIndex][0]}`,
+                state: {highScores}
+            }} />
         : (
             <main>
                 <div className='arcade'>

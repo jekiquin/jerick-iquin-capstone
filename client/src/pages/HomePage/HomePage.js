@@ -99,7 +99,8 @@ class HomePage extends Component{
             <main>
                 <div className='arcade'>
                     <div className='arcade__data'>
-                        <input type='text' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
+                        <label htmlFor='gamer'>Enter player name:</label>
+                        <input type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
                         { gameHighScore && 
                             <>
                                 <h2>High Scores:</h2>

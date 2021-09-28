@@ -1,13 +1,14 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const getLogos =  require('../controller/get-logos');
+const {getData, postData} = require('../controller/get-data');
+const {postHandle} = require('../controller/error-handling');
 
 require('dotenv').config();
 
-const SALT_ROUNDS = 8;
-const JWT_SECRET = process.env.JWT_SECRET;
+router.get('/get-logos', getLogos);
 
-router.get('/get-logos', getLogos)
+router.use('/get-highscores', postHandle);
+router.get('/get-highscores', getData);
+router.post('/get-highscores', postData)
 
 module.exports = router;

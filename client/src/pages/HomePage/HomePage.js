@@ -81,7 +81,7 @@ class HomePage extends Component{
         <ol className='arcade__scores'>
             {highScores?.map(data => (
                 <li key={uniqid()} className='arcade__score'>
-                    {data.name.padEnd(6,'').toUpperCase()} - {data.score}
+                    {data.name.padEnd(15,'-').toUpperCase()}{data.score}
                 </li>
             ))}
         </ol>

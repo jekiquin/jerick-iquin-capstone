@@ -21,12 +21,11 @@ class GamePage extends Component {
                 this.setState({gameInstance: response.gameConfig});
                 const {gameHighScore} = this.props.location.state
                 const topScore = gameHighScore ? gameHighScore[0].score : 0;
+                this.setState({topScore});
                 setTimeout(() => {
-                    // const reactProps = Object.keys(this.gameRef.current).find(key => key.includes('reactProps'));
-                    // const game = this.gameRef.current[reactProps].game;
-                    // game.instance.scene.keys.GameScene.gameState.highScore = topScore;
+                    // phaser needs time to generate the gamescores.   
                     writeGameScore(this.gameRef.current, topScore);
-            
+                    
                 }, 500)
             });
     }
@@ -34,13 +33,22 @@ class GamePage extends Component {
     componentWillUnmount() {
         const { gameId } = this.props.match.params;
         const {user} = this.props.location.state;
-        const topScore = readGameScore(this.gameRef.current)
+        const {topScore} = this.state;
+        const highScore = readGameScore(this.gameRef.current);
+        console.log(highScore, topScore);
         // axios post here maybe?
-        gameFetcher.post('/get-highscores', {
-            game: gameId,
-            name: user,
-            score: topScore
-        })
+        if(highScore && highScore !== topScore) {
+            // if there's no topscore or if it's zero, just move on.
+            gameFetcher.post('/get-highscores', {
+                game: gameId,
+                name: user,
+                score: highScore
+            })
+            .then(() => {
+                console.log('Post success!')
+            })
+        }
+
         this.gameRef.current.destroy();
     }
 
@@ -48,12 +56,15 @@ class GamePage extends Component {
         const { gameInstance } = this.state;
         return(
             <div className='gamepage'>
-                <Link to='/' >
-                    <img className='gamepage__back-button' src={backButton} alt='back button' />
-                </Link>
                 <div id="phaser-game">
                     {gameInstance && <IonPhaser ref={this.gameRef} game={gameInstance}/>}
                 </div>
+                <div className='gamepage__buttons'>
+                    <Link to='/' >
+                        <img className='gamepage__button' src={backButton} alt='back button' />
+                    </Link>
+                </div>
+
             </div>
         )
     }

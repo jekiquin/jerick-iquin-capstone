@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import uniqid from 'uniqid';
 import { gameFetcher, LOCAL_HOST } from '../../utils/axiossetup';
@@ -15,8 +15,10 @@ class HomePage extends Component{
         games: null,
         gameIndex: null,
         highScores: null,
-        user: null
+        user: ''
     }
+
+    userInput = createRef()
 
     componentDidMount() {
         let games, gameIndex = 0;
@@ -74,10 +76,11 @@ class HomePage extends Component{
         )
     }
 
-    handleChange = e => {
-        sessionStorage.setItem('user', e.target.value.trim())
+    handleChange = () => {
+        const input = this.userInput.current.value
+        sessionStorage.setItem('user', input.trim())
         this.setState({
-            user: e.target.value.trim()
+            user: input.trim()
         })
     }
 
@@ -107,7 +110,7 @@ class HomePage extends Component{
                     <div className='arcade__data'>
                         <label htmlFor='invisiblecheck'><img className='arcade__close' src={backButton} alt='close button' /></label>
                         <label htmlFor='gamer'>Enter player name:</label>
-                        <input className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='10'/>
+                        <input ref={this.userInput} className='arcade__user' type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='10'/>
                         { gameHighScore && 
                             <>
                                 <h2>High Scores:</h2>

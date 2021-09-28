@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { gameFetcher } from '../../utils/axiossetup';
 import { readGameScore, writeGameScore } from '../../utils/read-game';
 import backButton from '../../assets/images/backbutton.png';
+import infoButton from '../../assets/images/info.png';
 import './GamePage.scss'
 
 class GamePage extends Component {
@@ -63,6 +64,10 @@ class GamePage extends Component {
                     <Link to='/' >
                         <img className='gamepage__button' src={backButton} alt='back button' />
                     </Link>
+                    <label htmlFor="invisiblecheck">
+                        <img className='gamepage__button' src={infoButton} alt='back button' />
+                    </label>
+                    <input className='gamepage__invisiblecheck' type='checkbox' name='invisblecheck' id='invisiblecheck' />
                 </div>
 
             </div>

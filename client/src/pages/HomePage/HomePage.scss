@@ -1,3 +1,5 @@
+@use '../../partial/placeholders' as *;
+
 .arcade {
     width: 100%;
     height: 100vh;
@@ -10,6 +12,10 @@
         position: absolute;
         color: gray;
         font-size: .8rem;
+    }
+
+    &__leader {
+        @extend %main-button;
     }
 
     &__frame {

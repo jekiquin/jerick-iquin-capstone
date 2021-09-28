@@ -4,7 +4,8 @@ import uniqid from 'uniqid';
 import { gameFetcher, LOCAL_HOST } from '../../utils/axiossetup';
 import './HomePage.scss';
 import arcade from '../../assets/images/arcade.png';
-import loading from '../../assets/images/loading.png'
+import loading from '../../assets/images/loading.png';
+import leaderButton from '../../assets/images/leaderboard.png';
 
 
 class HomePage extends Component{
@@ -13,7 +14,7 @@ class HomePage extends Component{
         games: null,
         gameIndex: null,
         highScores: null,
-        user: 'Gamer'
+        user: null
     }
 
     componentDidMount() {
@@ -26,7 +27,8 @@ class HomePage extends Component{
                 this.setState({
                     games,
                     gameIndex,
-                    highScores: res.data
+                    highScores: res.data,
+                    user: sessionStorage.getItem('user') || 'Gamer'
                 })
             }).catch(error => {
                 console.log(error)
@@ -72,6 +74,7 @@ class HomePage extends Component{
     }
 
     handleChange = e => {
+        sessionStorage.setItem('user', e.target.value.trim())
         this.setState({
             user: e.target.value.trim()
         })
@@ -101,6 +104,7 @@ class HomePage extends Component{
                     <div className='arcade__data'>
                         <label htmlFor='gamer'>Enter player name:</label>
                         <input type='text' id='gamer' name='gamer' onChange={this.handleChange} value={user} minLength='1' maxLength='6'/>
+                        <img className='arcade__leader' src={leaderButton} alt='leader button' />
                         { gameHighScore && 
                             <>
                                 <h2>High Scores:</h2>

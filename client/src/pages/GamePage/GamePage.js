@@ -11,7 +11,8 @@ import './GamePage.scss'
 class GamePage extends Component {
     state = {
         gameInstance: null,
-        topScore: 0
+        topScore: 0,
+        instructions: null
     }
 
     gameRef = createRef();
@@ -20,7 +21,10 @@ class GamePage extends Component {
         const { gameId } = this.props.match.params;
         import(`../../phaser/${gameId}/phaser-game.js`)
             .then(response => {
-                this.setState({gameInstance: response.gameConfig});
+                this.setState({
+                    gameInstance: response.gameConfig,
+                    instructions: response.instructions
+                });
                 const {gameHighScore} = this.props.location.state
                 const topScore = gameHighScore ? gameHighScore[0].score : 0;
                 this.setState({topScore});
@@ -55,7 +59,8 @@ class GamePage extends Component {
     }
 
     render() {
-        const { gameInstance } = this.state;
+        const { gameInstance, instructions } = this.state;
+        console.log(instructions);
         return(
             <div className='gamepage'>
                 <div id="phaser-game">

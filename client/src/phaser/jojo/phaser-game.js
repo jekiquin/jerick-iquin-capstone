@@ -23,3 +23,5 @@ export const gameConfig = {
     },
     scene: [GameScene]
 }
+
+export const instructions = 'Move Left: Left Arrow\nMove Right: Right Arrow\nJump: Up Arrow\nPunch: Space';

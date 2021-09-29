@@ -23,3 +23,5 @@ export const gameConfig = {
     },
     scene: [HomeScene, GameScene]
 }
+
+export const instructions = 'Player 1 Movements: W and S\nPlayer 2 Movements: Up and Down Arrow';

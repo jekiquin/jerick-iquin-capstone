@@ -1,4 +1,4 @@
-import arcade from '../../assets/images/arcade.png';
+import arcade from '../../assets/images/arcade2.png';
 import loading from '../../assets/images/loading.png';
 import { LOCAL_HOST }  from '../../utils/axiossetup';
 import './ArcadeFrame.scss';

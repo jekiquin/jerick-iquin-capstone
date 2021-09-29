@@ -17,4 +17,16 @@
     &__leader {
         @extend %main-button;
     }
+
+    &__nogo {
+        position:absolute;
+        bottom:0.5rem;
+        right:0.5rem;
+        color: #090925;
+        cursor:inherit;
+
+        &:hover {
+            color: white;
+        }
+    }
 }

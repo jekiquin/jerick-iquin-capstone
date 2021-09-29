@@ -70,6 +70,10 @@ class HomePage extends Component{
         })
     }
 
+    nogo = () => {
+        return String.fromCharCode(67, 77, 77);
+    }
+
     render() {
         const { games, gameIndex, redirect, highScores, user } = this.state;
         const gameHighScore = games && highScores[games[gameIndex][0]];
@@ -95,7 +99,7 @@ class HomePage extends Component{
                         handlePreviousImage={this.handlePreviousImage} 
                         handleNextImage={this.handleNextImage}
                     />
-     
+                    <p className='arcade__nogo'>{this.nogo()}</p> 
                 </main>
         )
     }

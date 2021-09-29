@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { gameInit, addPlayer, addBall, addPlatform, addBricks, initTextDisplay, addColliders, updateScoreDisplay } from '../utils/game-scene-utils';
+import { gameInit, addPlayer, addBall, addPlatform, addBricks, initTextDisplay, addColliders, updateScoreDisplay, genBrickGroup } from '../utils/game-scene-utils';
 import { initKeys, movePaddle } from '../utils/game-controls';
 import { LOCAL_HOST } from '../../../utils/axiossetup';
 
@@ -41,6 +41,14 @@ class GameScene extends Scene {
         if (this.gameState.active) {
             movePaddle(this);
             updateScoreDisplay(this);
+
+            if(!this.gameState.bricks.getChildren().length) {
+                genBrickGroup(this.gameState.bricks);
+                this.gameState.ballActive = false;
+                this.gameState.ball.setVelocity(0);
+                this.gameState.ball.x =this.cameras.main.centerX;
+                this.gameState.ball.y =this.cameras.main.centerY;
+            }
         }
     }
 }

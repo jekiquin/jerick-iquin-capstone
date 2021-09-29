@@ -49,10 +49,16 @@ export function addColliders(scene) {
 }
 
 export function addBricks(scene) {
+    scene.gameState.bricks?.destroy();
     scene.gameState.bricks = scene.physics.add.group();
+    genBrickGroup(scene.gameState.bricks)
+
+}
+
+export function genBrickGroup(brickGroup) {
     for(let yBricks=1; yBricks<8; yBricks++) {
         for (let xBricks=1; xBricks<16; xBricks++) {
-            scene.gameState.bricks.create(34*xBricks, 50+17*yBricks, `brick${yBricks}`).setImmovable(true);
+            brickGroup.create(34*xBricks, 50+17*yBricks, `brick${yBricks}`).setImmovable(true);
         }
     }
 }
@@ -107,7 +113,8 @@ function updateHighScore(scene){
 function updateLevel(scene) {
     if (scene.gameState.score % 10 === 0 && scene.gameState.level !== MAXLEVEL) {
         scene.gameState.level += 1;
-        scene.gameState.ballSpeed += 50*(scene.gameState.level - 1); 
+        scene.gameState.ballSpeed += 20*(scene.gameState.level - 1); 
+        scene.gameState.ball.setVelocityY(scene.gameState.ballSpeed);
         scene.gameState.levelDisplay.setText(scene.gameState.level)
     }
 }

@@ -3,7 +3,7 @@ import { IonPhaser } from '@ion-phaser/react';
 import { Link } from 'react-router-dom';
 import { gameFetcher } from '../../utils/axiossetup';
 import { readGameScore, writeGameScore } from '../../utils/read-game';
-import backButton from '../../assets/images/backbutton.png';
+import GameInstructions from '../../components/GameInstructions/GameInstructions';
 import homeButton from '../../assets/images/home.png';
 import infoButton from '../../assets/images/info.png';
 import './GamePage.scss'
@@ -32,7 +32,7 @@ class GamePage extends Component {
                     // phaser needs time to generate the gamescores.   
                     writeGameScore(this.gameRef.current, topScore);
                     
-                }, 500)
+                }, 550)
             });
     }
 
@@ -61,7 +61,9 @@ class GamePage extends Component {
     render() {
         const { gameInstance, instructions } = this.state;
         console.log(instructions);
-        return(
+        return !gameInstance
+        ? <div className='gamepage'><h1>Loading...</h1></div>
+        : (
             <div className='gamepage'>
                 <div id="phaser-game">
                     {gameInstance && <IonPhaser ref={this.gameRef} game={gameInstance}/>}
@@ -74,6 +76,7 @@ class GamePage extends Component {
                         <img className='gamepage__button' src={infoButton} alt='back button' />
                     </label>
                     <input className='gamepage__invisiblecheck' type='checkbox' name='invisblecheck' id='invisiblecheck' />
+                    <GameInstructions instructions={instructions} />
                 </div>
 
             </div>

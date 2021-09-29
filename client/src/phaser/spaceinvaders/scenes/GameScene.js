@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement } from '../utils/game-scene-utils';
+import { addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement, generateEnemyGroup } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls';
 import { LOCAL_HOST } from '../../../utils/axiossetup';
 
@@ -16,7 +16,9 @@ class GameScene extends Scene {
             bossStart: 0,
             enemyVelocity: 1,
             score: 0,
-            highScore: 0
+            highScore: 0,
+            level: 1,
+            enemyList: ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']
         }
     }
 
@@ -44,7 +46,7 @@ class GameScene extends Scene {
         addTexts(this);
         addPlayer(this, 'ship', 'playerbullet');
         addPlatform(this, 'platform');
-        addEnemies(this, ['bug1', 'bug2', 'bug3', 'bug4', 'bug5']);
+        addEnemies(this, this.gameState.enemyList);
         genEnemyBullets(this, 'enemybullet');
         addBoss(this, 'boss');
         addColliders(this);
@@ -78,6 +80,13 @@ class GameScene extends Scene {
 
         if(!this.gameState.bossMove.isPlaying() && gameTime - this.gameState.bossStart > BOSS_DELAY) {
             this.gameState.bossMove.play();
+        }
+
+        if(!this.gameState.enemies?.getChildren().length) {
+            this.gameState.level += 0.5;
+            this.gameState.enemyVelocity = this.gameState.level;
+            generateEnemyGroup(this.gameState.enemies, this.gameState.enemyList);
+            this.gameState.active = true;
         }
         
         gameControls(this, 'playerbullet');

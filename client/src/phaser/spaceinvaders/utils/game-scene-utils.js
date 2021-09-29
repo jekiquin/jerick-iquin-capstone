@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-const SPEEDUP = 5;
-const SPEEDDROP = 60;
+const SPEEDUP = 1.5;
+const DROP = 10;
 const TEXT_STYLE = {fontFamily: 'Game', stroke: '#FF0000', strokeThickness: 2};
 
 export function addTexts(scene) {
@@ -30,13 +30,10 @@ export function addPlatform(scene, platform) {
 export function addEnemies(scene, enemies) {
     scene.gameState.enemies?.destroy();
     scene.gameState.enemies = scene.physics.add.group();
-    for (let yEnemies=1; yEnemies<6; yEnemies++) {
-        for (let xEnemies=1; xEnemies<11; xEnemies++) {
-            scene.gameState.enemies.create(50*xEnemies, 50+50*yEnemies, enemies[yEnemies-1]).setScale(.3).setGravityY(-200);
-        }
-    }
+    generateEnemyGroup(scene.gameState.enemies, enemies)
     scene.gameState.enemies.setVisible(false)
 
+    scene.gameState.pellets?.destroy();
     scene.gameState.pellets = scene.physics.add.group();
 }
 
@@ -49,7 +46,7 @@ export function addBoss(scene, boss) {
         x: 600,
         ease: 'Linear',
         duration: 6000,
-        repeat: 5,
+        repeat: -1,
         yoyo: false,
         repeatDelay: 10000
     })
@@ -60,7 +57,7 @@ export function addColliders(scene) {
     scene.physics.add.collider(scene.gameState.player, scene.gameState.platforms);
 
     scene.physics.add.overlap(scene.gameState.playerBullet, scene.gameState.pellets, (bullet, pellet) => {
-        if (Math.random() < 0.15) {
+        if (Math.random() < 0.80) {
             scene.gameState.score += 1;
             displayScores(scene);
             bullet.destroy();
@@ -91,7 +88,6 @@ export function addColliders(scene) {
         displayScores(scene);
         enemy.destroy();
         bullet.destroy();
-        // console.log(enemy.texture.key);
     });
 
     scene.physics.add.overlap(scene.gameState.playerBullet, scene.gameState.bossMove.targets[0], (_, bullet) => {
@@ -120,6 +116,7 @@ export function genPlayerBullets(scene, playerBullet) {
 }
 
 export function genEnemyBullets(scene, enemyBullet) {
+    scene.gameState.pelletsLoop?.destroy();
     scene.gameState.pelletsLoop = scene.time.addEvent({
         delay: 300,
         callback: () => genPellet(scene.gameState, scene.gameState.pellets, enemyBullet),
@@ -131,17 +128,13 @@ export function genEnemyBullets(scene, enemyBullet) {
 
 export function genEnemyMovement(scene) {
     const totalEnemies = scene.gameState.enemies?.getChildren().length;
+    console.log(scene.gameState.enemyVelocity);
     if(!totalEnemies) {
         scene.gameState.playerBullet.getChildren().forEach(bullet => bullet.destroy());
         scene.gameState.pellets.getChildren().forEach(pellet => pellet.destroy());
-        gamePlayEnd(scene);
+        // gamePlayEnd(scene);
+        scene.gameState.active = false; 
         return
-    }
-
-    let drop = 10;
-    if (totalEnemies === 1 && Math.abs(scene.gameState.enemyVelocity) !== SPEEDUP) {
-        scene.gameState.enemyVelocity *= SPEEDUP;
-        drop = SPEEDDROP;
     }
 
     const sortedEnemies = scene.gameState.enemies.getChildren().sort((a, b) => a.x - b.x);
@@ -156,11 +149,19 @@ export function genEnemyMovement(scene) {
 
     scene.gameState.enemies.getChildren().forEach(enemy => {
         if(isBoundary) {
-            enemy.y += drop; 
+            enemy.y += DROP; 
         }
         enemy.x += scene.gameState.enemyVelocity;
     });
 
+}
+
+export function generateEnemyGroup(enemyGroup, enemies){
+    for (let yEnemies=1; yEnemies<6; yEnemies++) {
+        for (let xEnemies=1; xEnemies<11; xEnemies++) {
+            enemyGroup.create(50*xEnemies, 50+50*yEnemies, enemies[yEnemies-1]).setScale(.3).setGravityY(-200);
+        }
+    }
 }
 
 function displayScores(scene) {

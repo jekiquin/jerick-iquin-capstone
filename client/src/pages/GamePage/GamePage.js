@@ -1,3 +1,4 @@
+
 import { Component, createRef } from 'react';
 import { IonPhaser } from '@ion-phaser/react';
 import { Link } from 'react-router-dom';
@@ -41,7 +42,6 @@ class GamePage extends Component {
         const {user} = this.props.location.state;
         const {topScore} = this.state;
         const highScore = readGameScore(this.gameRef.current);
-        console.log(highScore, topScore);
         // axios post here maybe?
         if(highScore && highScore !== topScore) {
             // if there's no topscore or if it's zero, just move on.
@@ -60,7 +60,6 @@ class GamePage extends Component {
 
     render() {
         const { gameInstance, instructions } = this.state;
-        console.log(instructions);
         return !gameInstance
         ? <div className='gamepage'><h1>Loading...</h1></div>
         : (

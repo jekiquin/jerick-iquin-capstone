@@ -128,7 +128,6 @@ export function genEnemyBullets(scene, enemyBullet) {
 
 export function genEnemyMovement(scene) {
     const totalEnemies = scene.gameState.enemies?.getChildren().length;
-    console.log(scene.gameState.enemyVelocity);
     if(!totalEnemies) {
         scene.gameState.playerBullet.getChildren().forEach(bullet => bullet.destroy());
         scene.gameState.pellets.getChildren().forEach(pellet => pellet.destroy());

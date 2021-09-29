@@ -4,7 +4,6 @@ import './GameInstructions.scss';
 
 
 function GameInstructions({instructions}) {
-    console.log(instructions);
     const displayInstructions = () => 
         instructions.split('\n').map(instruction => 
             <p key={uniqid()} className='instructions__ctx'>{instruction}</p>

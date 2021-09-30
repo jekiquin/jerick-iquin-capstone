@@ -1,9 +1,17 @@
 import Phaser from 'phaser';
+import GameInstructions from '../../../components/GameInstructions/GameInstructions';
 
 const SPEEDUP = 1.5;
 const DROP = 10;
 const TEXT_STYLE = {fontFamily: 'Game', stroke: '#FF0000', strokeThickness: 2};
 
+export function gameInit(scene) {
+    scene.gameState.enemyVelocity = 1;
+    scene.gameState.enemyVelocityFactor = 1;
+    scene.gameState.startTime = 0;
+    scene.gameState.bossStart = 0;
+    scene.gameState.score = 0;
+}
 export function addTexts(scene) {
     scene.gameState.scoreText = scene.add.text(10, 700, `Score: ${scene.gameState.score}`, {...TEXT_STYLE, fontSize: '12px'}).setOrigin(0,0);
     scene.gameState.highScoreText = scene.add.text(530, 700, `High Score: ${scene.gameState.highScore}`, {...TEXT_STYLE, fontSize: '12px'}).setOrigin(1,0);
@@ -184,13 +192,9 @@ function genPellet(gameState, pellets, enemyBullet) {
 function gamePlayEnd(scene) {
     scene.gameState.active = false;
     scene.physics.pause();
-    scene.gameState.enemyVelocity = 1;
-    scene.gameState.enemyVelocityFactor = 1;
     scene.gameState.pelletsLoop?.destroy();
-    scene.gameState.startTime = 0;
     scene.gameState.bossMove.stop();
-    scene.gameState.bossStart = 0;
-    scene.gameState.score = 0;
+    gameInit(scene)
     gameOverTexts(scene);
 }
 

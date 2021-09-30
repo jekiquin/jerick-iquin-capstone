@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement, generateEnemyGroup } from '../utils/game-scene-utils';
+import { gameInit, addTexts, addPlayer, addPlatform, addEnemies, addBoss, addColliders, genEnemyBullets, genEnemyMovement, generateEnemyGroup } from '../utils/game-scene-utils';
 import { gameControls } from '../utils/game-controls';
 import { LOCAL_HOST } from '../../../utils/axiossetup';
 
@@ -43,6 +43,7 @@ class GameScene extends Scene {
         this.gameState.cursors = this.input.keyboard.createCursorKeys();
         this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'bg').setOrigin(0.5, 0.5).setScale(1, 1.2);
 
+        gameInit(this);
         addTexts(this);
         addPlayer(this, 'ship', 'playerbullet');
         addPlatform(this, 'platform');

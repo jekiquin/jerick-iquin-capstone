@@ -34,3 +34,14 @@ Remembering the good old arcade? Playing those simple games back in the days? Lo
     npm start
     ```
 4. Happy hacking
+
+## Future Development
+1. Integrating more animations
+2. Adding more levels to library
+3. Completing `Jojo` game
+4. Adding online multiplayer functionality
+    - Include user login and authentication
+5. Adding more games to the library
+
+## Misc
+If anyone wants to collab, don't hesitate to contact me through linkedin!

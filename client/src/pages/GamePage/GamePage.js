@@ -18,26 +18,7 @@ class GamePage extends Component {
 
     gameRef = createRef();
 
-    componentDidMount() {
-        const { gameId } = this.props.match.params;
-        import(`../../phaser/${gameId}/phaser-game.js`)
-            .then(response => {
-                this.setState({
-                    gameInstance: response.gameConfig,
-                    instructions: response.instructions
-                });
-                const {gameHighScore} = this.props.location.state
-                const topScore = gameHighScore ? gameHighScore[0].score : 0;
-                this.setState({topScore});
-                setTimeout(() => {
-                    // phaser needs time to generate the gamescores.   
-                    writeGameScore(this.gameRef.current, topScore);
-                    
-                }, 550)
-            });
-    }
-
-    componentWillUnmount() {
+    componentCleanup = async () => {
         const { gameId } = this.props.match.params;
         const {user} = this.props.location.state;
         const {topScore} = this.state;
@@ -53,9 +34,38 @@ class GamePage extends Component {
             .then(() => {
                 console.log('Post success!')
             })
+            .catch (error => {
+                console.log(error);
+            })
         }
 
         this.gameRef.current.destroy();
+    }
+
+    componentDidMount() {
+        const { gameId } = this.props.match.params;
+        gameFetcher.get(`/get-highscores/${gameId}`)
+            .then(response => {
+                const gameHighScore = response.data;
+                import(`../../phaser/${gameId}/phaser-game.js`)
+                    .then(response => {
+                        this.setState({
+                            gameInstance: response.gameConfig,
+                            instructions: response.instructions
+                        });
+                        const topScore = gameHighScore ? gameHighScore[0].score : 0;
+                        this.setState({topScore});
+                        setTimeout(() => {
+                            // phaser needs time to generate the gamescores.   
+                            writeGameScore(this.gameRef.current, topScore);
+                            
+                        }, 550)
+                    });
+            })
+    }
+
+    componentWillUnmount() {
+        this.componentCleanup();
     }
 
     render() {

@@ -44,6 +44,7 @@ const postData = (req, res) => {
         }
         data[game].push({name, score});
         data[game].sort((a,b) => b.score - a.score);
+        data[game] = data[game].slice(0,20);
         writeFile(DATA_PATH, data);
         res.status(201).json({
             game,

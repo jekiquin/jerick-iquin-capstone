@@ -3,13 +3,11 @@
 - LinkedIn: https://www.linkedin.com/in/jerick-iquin/
 
 ## Tech Stacks
----
 1. React
 2. Phaser
 3. Express
 
 ## Functionality
----
 Remembering the good old arcade? Playing those simple games back in the days? Look no more. This Virtual Arcade webapp offers a collection of classic games. 
 
 ### Games List(will be updated in the future)
@@ -19,7 +17,6 @@ Remembering the good old arcade? Playing those simple games back in the days? Lo
 - Jojo (under construction) - story based indie game
 
 ## Install
----
 1. Clone Repository
     ```
     git clone https://github.com/jekiquin/jerick-iquin-capstone.git

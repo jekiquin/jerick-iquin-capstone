@@ -31,9 +31,15 @@ export function addTexts(scene) {
     .setOrigin(1, 0);
 
   // deleting texts
-  scene.gameState.gameOverText?.destroy();
-  scene.gameState.yesText?.destroy();
-  scene.gameState.noText?.destroy();
+  if (scene.gameState.gameOverText) {
+    scene.gameState.gameOverText.destroy();
+  }
+  if (scene.gameState.yesText) {
+    scene.gameState.yesText.destroy();
+  }
+  if (scene.gameState.noText) {
+    scene.gameState.noText.destroy();
+  }
 }
 
 export function addPlayer(scene, player) {
@@ -58,17 +64,23 @@ export function addPlatform(scene, platform) {
 }
 
 export function addEnemies(scene, enemies) {
-  scene.gameState.enemies?.destroy();
+  if (scene.gameState.enemies) {
+    scene.gameState.enemies.destroy();
+  }
   scene.gameState.enemies = scene.physics.add.group();
   generateEnemyGroup(scene.gameState.enemies, enemies);
   scene.gameState.enemies.setVisible(false);
 
-  scene.gameState.pellets?.destroy();
+  if (scene.gameState.pellets) {
+    scene.gameState.pellets.destroy();
+  }
   scene.gameState.pellets = scene.physics.add.group();
 }
 
 export function addBoss(scene, boss) {
-  scene.gameState.boss?.destroy();
+  if (scene.gameState.boss) {
+    scene.gameState.boss.destroy();
+  }
   scene.gameState.boss = scene.physics.add
     .sprite(0, 30, boss)
     .setGravityY(-200)
@@ -175,7 +187,9 @@ export function genPlayerBullets(scene, playerBullet) {
 }
 
 export function genEnemyBullets(scene, enemyBullet) {
-  scene.gameState.pelletsLoop?.destroy();
+  if (scene.gameState.pelletsLoop) {
+    scene.gameState.pelletsLoop.destroy();
+  }
   scene.gameState.pelletsLoop = scene.time.addEvent({
     delay: 300,
     callback: () =>
@@ -258,7 +272,10 @@ function genPellet(gameState, pellets, enemyBullet) {
 function gamePlayEnd(scene) {
   scene.gameState.active = false;
   scene.physics.pause();
-  scene.gameState.pelletsLoop?.destroy();
+  if (scene.gameState.pelletsLoop) {
+    scene.gameState.pelletsLoop.destroy();
+  }
+
   scene.gameState.bossMove.stop();
   gameInit(scene);
   gameOverTexts(scene);

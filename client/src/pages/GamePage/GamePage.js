@@ -2,7 +2,7 @@ import { Component, createRef } from 'react';
 import { IonPhaser } from '@ion-phaser/react';
 import { Link } from 'react-router-dom';
 import { gameFetcher } from '../../utils/axiossetup';
-import { readGameScore, writeGameScore } from '../../utils/read-game';
+import { readGameScore } from '../../utils/read-game';
 import GameInstructions from '../../components/GameInstructions/GameInstructions';
 import homeButton from '../../assets/images/home.png';
 import infoButton from '../../assets/images/info.png';
@@ -11,7 +11,7 @@ import './GamePage.scss';
 class GamePage extends Component {
   state = {
     gameInstance: null,
-    topScore: 0,
+    // topScore: 0,
     instructions: null,
   };
 
@@ -20,7 +20,7 @@ class GamePage extends Component {
   componentCleanup = async () => {
     const { gameId } = this.props.match.params;
     const { user } = this.props.location.state;
-    const { topScore } = this.state;
+    // const { topScore } = this.state;
     const highScore = readGameScore(this.gameRef.current);
     // axios post here maybe?
     if (highScore) {
@@ -44,20 +44,21 @@ class GamePage extends Component {
 
   componentDidMount() {
     const { gameId } = this.props.match.params;
-    gameFetcher.get(`/get-highscores/${gameId}`).then((response) => {
-      const gameHighScore = response.data;
-      import(`../../phaser/${gameId}/phaser-game.js`).then((response) => {
-        this.setState({
-          gameInstance: response.gameConfig,
-          instructions: response.instructions,
-        });
-        const topScore = gameHighScore ? gameHighScore[0].score : 0;
-        this.setState({ topScore });
-        setTimeout(() => {
-          // phaser needs time to generate the gamescores.
-          writeGameScore(this.gameRef.current, topScore);
-        }, 550);
+    import(`../../phaser/${gameId}/phaser-game.js`).then((response) => {
+      this.setState({
+        gameInstance: response.gameConfig,
+        instructions: response.instructions,
       });
+      // gameFetcher.get(`/get-highscores/${gameId}`).then((response) => {
+      //   const gameHighScore = response.data;
+
+      // const topScore = gameHighScore ? gameHighScore[0].score : 0;
+      // this.setState({ topScore });
+      // setTimeout(() => {
+      //   // phaser needs time to generate the gamescores.
+      //   writeGameScore(this.gameRef.current, topScore);
+      // }, 550);
+      //   });
     });
   }
 
